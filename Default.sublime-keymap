@@ -1,0 +1,5 @@
+[
+	{ "keys": ["ctrl+f5"],  "command": "insert_date" },
+	{ "keys": ["shift+f5"], "command": "insert_date", "args": {"format": "%H:%M:%S"} },
+	{ "keys": ["alt+f5"],   "command": "insert_date", "args": {"format": "%d/%m/%Y %I:%M %p", "prompt": true} }
+]
