@@ -15,16 +15,19 @@ Example key definitions as follows:
 
 ### Format Examples ###
 
-| Format string       | Resulting string    |
-|:--------------------|:--------------------|
-| `%d/%m/%Y %I:%M %p` | 12/05/2012 12:43 PM |
-| `%d. %b %y`         | 12. May 12          |
-| `%H:%M:%S.%f`       | 12:43:47.965000     |
-| `%x %X`             | 05/12/12 12:43:47   |
+| Format string       | Resulting string                 |
+|:--------------------|:---------------------------------|
+| `%d/%m/%Y %I:%M %p` | 12/05/2012 03:49 PM              |
+| `%d. %b %y`         | 12. May 12                       |
+| `%H:%M:%S.%f%z`     | 15:49:55.287000+0200             |
+| `%x %X`             | 05/12/12 15:49:55                |
+| `iso`               | 2012-05-12T15:49:55.287000+02:00 |
 
 
 ## ToDo ##
 
+- Support `%Z` as named timezone
+- Allow output timezone to be specified
 - Default (fallback) format string to be configured
 - Keep history of recently used format strings and display in a quick panel
 - `shift` parameter (in style of `datetime.timedelta`)
