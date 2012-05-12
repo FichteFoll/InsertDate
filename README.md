@@ -1,4 +1,4 @@
-# SublimeText - InsertDate #
+# SublimeText-InsertDate #
 
 A plugin for Sublime Text 2 that inserts the current date and/or hour according to the format specified.
 It supports multiple selections (regions) and will replace selected text.
@@ -31,11 +31,6 @@ Example key definitions as follows:
 | `iso`               | 2012-05-12T15:49:55.287000+02:00 |
 
 
-## Licence ##
-
-This package makes use of and includes [pytz-2012c-py2.6][pytz] ([ext. download][pytz-down]) by Stuart Bishop for conversions between timezones.
-pytz is licenced under the **MIT licence**.
-
 ## ToDo ##
 
 - Support `%Z` as named timezone
@@ -46,5 +41,3 @@ pytz is licenced under the **MIT licence**.
 
 
 [strptime]: http://docs.python.org/py3k/library/datetime.html#strftime-strptime-behavior "Python docs: 7.1.8. strftime() and strptime() Behavior"
-[pytz]: http://pytz.sourceforge.net/ "pytz - World Timezone Definitions for Python"
-[pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz - World Timezone Definitions for Python"
