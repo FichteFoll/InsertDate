@@ -25,7 +25,7 @@ __all__ = [
     'common_timezones', 'common_timezones_set',
     ]
 
-import sys, datetime, os.path, gettext
+import datetime, os.path  # , gettext
 try:
     from UserDict import DictMixin
 except ImportError:
@@ -41,7 +41,7 @@ from pytz.exceptions import InvalidTimeError
 from pytz.exceptions import NonExistentTimeError
 from pytz.exceptions import UnknownTimeZoneError
 from pytz.tzinfo import unpickler
-from pytz.tzfile import build_tzinfo, _byte_string
+from pytz.tzfile import build_tzinfo
 
 
 try:
@@ -80,6 +80,10 @@ else: # Python 2.x
         """
         return s.encode('US-ASCII')
 
+# Required in ST2 because __file__ would just be './pytz/__init__.py' and that
+# resolves to "C:\Windows\pytz" when executing timezone() in run time (here)
+__path__ = os.path.abspath(os.path.dirname(__file__))
+
 
 def open_resource(name):
     """Open a resource from the zoneinfo subdir for reading.
@@ -91,8 +95,8 @@ def open_resource(name):
     for part in name_parts:
         if part == os.path.pardir or os.path.sep in part:
             raise ValueError('Bad path segment: %r' % part)
-    filename = os.path.join(os.path.dirname(__file__),
-                            'zoneinfo', *name_parts)
+
+    filename = os.path.join(__path__, 'zoneinfo', *name_parts)
     if not os.path.exists(filename) and resource_stream is not None:
         # http://bugs.launchpad.net/bugs/383171 - we avoid using this
         # unless absolutely necessary to help when a broken version of
@@ -115,7 +119,7 @@ def resource_exists(name):
 # module, as well as the Zope3 i18n package. Perhaps we should just provide
 # the POT file and translations, and leave it up to callers to make use
 # of them.
-# 
+#
 # t = gettext.translation(
 #         'pytz', os.path.join(os.path.dirname(__file__), 'locales'),
 #         fallback=True
@@ -128,7 +132,7 @@ def resource_exists(name):
 _tzinfo_cache = {}
 
 def timezone(zone):
-    r''' Return a datetime.tzinfo implementation for the given timezone 
+    r''' Return a datetime.tzinfo implementation for the given timezone
 
     >>> from datetime import datetime, timedelta
     >>> utc = timezone('UTC')
@@ -175,14 +179,13 @@ def timezone(zone):
 
     zone = _unmunge_zone(zone)
     if zone not in _tzinfo_cache:
-        if zone in all_timezones_set:
-            fp = open_resource(zone)
-            try:
-                _tzinfo_cache[zone] = build_tzinfo(zone, fp)
-            finally:
-                fp.close()
-        else:
+        if not zone in all_timezones_set:
             raise UnknownTimeZoneError(zone)
+        fp = open_resource(zone)
+        try:
+            _tzinfo_cache[zone] = build_tzinfo(zone, fp)
+        finally:
+            fp.close()
 
     return _tzinfo_cache[zone]
 
@@ -252,7 +255,7 @@ UTC = utc = UTC() # UTC is a singleton
 def _UTC():
     """Factory function for utc unpickling.
 
-    Makes sure that unpickling a utc instance always returns the same 
+    Makes sure that unpickling a utc instance always returns the same
     module global.
 
     These examples belong in the UTC class above, but it is obscured; or in
@@ -512,7 +515,7 @@ FixedOffset.__safe_for_unpickling__ = True
 
 
 def _test():
-    import doctest, os, sys
+    import doctest, os.pardir, sys
     sys.path.insert(0, os.pardir)
     import pytz
     return doctest.testmod(pytz)
@@ -1098,7 +1101,7 @@ all_timezones = \
  'Zulu']
 all_timezones = [
         tz for tz in all_timezones if resource_exists(tz)]
-        
+
 all_timezones_set = set(all_timezones)
 common_timezones = \
 ['Africa/Abidjan',
@@ -1533,5 +1536,5 @@ common_timezones = \
  'UTC']
 common_timezones = [
         tz for tz in common_timezones if tz in all_timezones]
-        
+
 common_timezones_set = set(common_timezones)
