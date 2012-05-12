@@ -19,7 +19,15 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             # emtpy string entered in input panel
             return
 
-        text = datetime.now().strftime(format)
+        now = datetime.now()
+        if format.startswith("iso"):
+            sep = 'T'
+            if len(format) == 5 and format[3] == ':':
+                sep = str(format[4])  # convert from unicode
+            text = now.isoformat(sep)
+        else:
+            text = now.strftime(format)
+
         for r in self.view.sel():
             if r.empty():
                 self.view.insert (edit, r.begin(), text)

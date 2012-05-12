@@ -25,8 +25,8 @@ Example key definitions as follows:
 
 ## ToDo ##
 
-- `format="iso"`
 - Default (fallback) format string to be configured
+- Keep history of recently used format strings and display in a quick panel
 - `shift` parameter (in style of `datetime.timedelta`)
 
 
