@@ -9,9 +9,16 @@ For more information about the accepted formatting syntax, see [`datetime.strfti
 
 Example key definitions as follows:
 
-	{ "keys": ["ctrl+f5"],  "command": "insert_date" },
-	{ "keys": ["shift+f5"], "command": "insert_date", "args": {"format": "%H:%M:%S"} },
-	{ "keys": ["alt+f5"],   "command": "insert_date", "args": {"format": "%d/%m/%Y %I:%M %p", "prompt": true} }
+	// Insert datetime using default format text
+	{ "keys": ["f5"],                "command": "insert_date" },
+	// Insert datetime using the specified format
+	{ "keys": ["ctrl+f5", "ctrl+d"], "command": "insert_date", "args": {"format": "%Y-%m-%d"} },
+	{ "keys": ["ctrl+f5", "ctrl+t"], "command": "insert_date", "args": {"format": "%H:%M:%S"} },
+	{ "keys": ["ctrl+f5", "ctrl+i"], "command": "insert_date", "args": {"format": "iso"} },
+	// Prompt for user input, "format" would behave as default text
+	// and insert the datetime using that format string
+	{ "keys": ["alt+f5"],            "command": "insert_date", "args": {"prompt": true} }
+
 
 ### Format Examples ###
 

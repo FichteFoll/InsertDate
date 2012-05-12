@@ -87,9 +87,15 @@ class InsertDateCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, format=None, prompt=False):
         if prompt:
-            # pass this function as callback
-            self.view.window().show_input_panel("Input date:", format, partial(self.run, edit), None, None)
-            return
+            self.view.window().show_input_panel(
+                "Date format string:",
+                format or '',
+                # pass this function as callback
+                partial(self.run, edit),
+                None, None
+            )
+            return  # call already handled
+
         elif format is None:
             format = self.default_format
 
