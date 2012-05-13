@@ -30,6 +30,9 @@ Example key definitions as follows:
 | `%x %X`             | 05/12/12 15:49:55                |
 | `iso`               | 2012-05-12T15:49:55.287000+02:00 |
 
+`iso` is almost equivalent to `%Y-%m-%dT%H:%M:%s.%f%z` (it is not possible to insert a char into %z).
+`%x` and `%X` are representative for 'Locale’s appropriate time representation'.
+
 
 ## Licence ##
 
@@ -47,4 +50,4 @@ pytz is licenced under the **MIT licence**.
 
 [strptime]: http://docs.python.org/py3k/library/datetime.html#strftime-strptime-behavior "Python docs: 7.1.8. strftime() and strptime() Behavior"
 [pytz]: http://pytz.sourceforge.net/ "pytz - World Timezone Definitions for Python"
-[pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz - World Timezone Definitions for Python"
+[pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
