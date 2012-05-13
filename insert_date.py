@@ -1,3 +1,8 @@
+# This loads the actual systems time locale, (None, None) otherwise.
+# Required for use with datetime.strftime("%x %x").
+import locale
+locale.setlocale(locale.LC_TIME, '')
+
 import sublime
 import sublime_plugin
 from datetime import datetime, timedelta, tzinfo
