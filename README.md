@@ -47,8 +47,8 @@ For example keymap definitions, see [Default.sublime-keymap][keymap].
 | `%x %X %Z (UTC%z)`       | `{'tz_out': 'EST'}`              | 13.05.2012 08:45:26 EST (UTC-0500) |
 | `%x %X %Z (UTC%z)`       | `{'tz_out': 'America/New_York'}` | 13.05.2012 09:45:26 EDT (UTC-0400) |
 
-`iso` is almost equivalent to `%Y-%m-%dT%H:%M:%s.%f%z` (it is not possible to insert a char into %z).
-`%x` and `%X` are representative for 'Locale’s appropriate time representation'.
+Notes:<br />
+`%x` and `%X` are representative for 'Locale’s appropriate time representation'.<br />
 `%p` also corresponds to the locale's setting, thus using `%p` e.g. on a German system gives an empty string.
 
 
