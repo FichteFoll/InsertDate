@@ -34,7 +34,7 @@ class InsertDateCommand(sublime_plugin.TextCommand, FormatDate):
             return
 
         if type(text) == str:
-            print(text)
+            # print(text)
             text = text.decode('utf-8')
 
         for r in self.view.sel():

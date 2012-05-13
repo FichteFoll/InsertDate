@@ -76,7 +76,7 @@ class FormatDate(object):
     default = dict(
         # TODO: be modifiable from settings
         format="%x %X",
-         tz_in=local
+         tz_in="local"
     )
 
     def __init__(self, local=None, default=None):
@@ -109,7 +109,7 @@ class FormatDate(object):
             try:
                 tz_in = pytz.timezone(tz_in)
             except UnknownTimeZoneError:
-                raise UnknownTimeZoneError("Parameter %r=%r is not a valid timezone string" % ('tz_in', tz_in))
+                raise UnknownTimeZoneError("Parameter %r=%r is not a valid timezone name" % ('tz_in', tz_in))
 
         if not isinstance(tz_in, tzinfo):
             raise TypeError("Parameter 'tz_in' is not instance of datetime.tzinfo")
@@ -117,7 +117,7 @@ class FormatDate(object):
         try:
             tz_out = pytz.timezone(tz_out) if (tz_out is not None) else tz_in
         except UnknownTimeZoneError:
-            raise UnknownTimeZoneError("Parameter %r=%r is not a valid timezone string" % ('tz_out', tz_out))
+            raise UnknownTimeZoneError("Parameter %r=%r is not a valid timezone name" % ('tz_out', tz_out))
 
         # get timedata
         try:
