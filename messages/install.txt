@@ -10,6 +10,7 @@ Usage
 =====
 
 Commandname:
+
 	insert_date
 
 Parameters:
@@ -19,15 +20,15 @@ Parameters:
 
 	- prompt (bool) - Default: False
 	  If True a small popup window will be displayed in which you can specify the format string
-	  manually. The string in passed in format will be used as default input, '' otherwise.
+	  manually. The string passed in format will be used as default input, '' otherwise.
 
 	- tz_in (str) - Default: 'local'
 	  Defines in which timezone the current time (read from your system) will be interpreted.
-	  Required if you want %Z your timezones name. May be one of the following values or 'local':
+	  Required if you want %Z (your timezone's name). May be one of the following values or 'local':
 	  https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101
 
 	- tz_out (str) - Default: tz_in
-	  Defines on which timezone the output time should be based on.
+	  Defines on which timezone the output time should be based.
 	  Supports the same values as tz_in ('local' does not support %Z yet).
 
 

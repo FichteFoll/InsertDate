@@ -1,0 +1,12 @@
+[
+	// Insert datetime using default format text
+	{ "keys": ["f5"],                  "command": "insert_date" },
+	// Insert datetime using the specified format
+	{ "keys": ["super+f5", "super+d"], "command": "insert_date", "args": {"format": "%Y-%m-%d"} },
+	{ "keys": ["super+f5", "super+t"], "command": "insert_date", "args": {"format": "%X"} },
+	{ "keys": ["super+f5", "super+i"], "command": "insert_date", "args": {"format": "iso"} },
+	{ "keys": ["super+f5", "super+u"], "command": "insert_date", "args": {"format": "%x %X %Z", "tz_out": "UTC"} },
+	// Prompt for user input, "format" would behave as default text
+	// and insert the datetime using that format string
+	{ "keys": ["alt+f5"],              "command": "insert_date", "args": {"prompt": true} }
+]
