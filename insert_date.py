@@ -1,7 +1,9 @@
-import sublime
-import sublime_plugin
+import locale
 from functools import partial
 from format_date import FormatDate
+
+import sublime
+import sublime_plugin
 
 
 class InsertDateCommand(sublime_plugin.TextCommand, FormatDate):
@@ -33,11 +35,16 @@ class InsertDateCommand(sublime_plugin.TextCommand, FormatDate):
             # don't bother replacing selections with actually nothing
             return
 
+        # Fix potential unicode/codepage issues
         if type(text) == str:
             # print(text)
-            text = text.decode('utf-8')
+            try:
+                text = text.decode(locale.getpreferredencoding())
+            except UnicodeDecodeError:
+                text = text.decode('utf-8')
 
         for r in self.view.sel():
+            # Insert when sel is empty to not select the contents
             if r.empty():
                 self.view.insert (edit, r.a, text)
             else:
