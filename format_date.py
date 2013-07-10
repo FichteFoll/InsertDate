@@ -1,28 +1,26 @@
-# This loads the actual systems time locale, (None, None) otherwise.
+# This loads the actual systems time local_tze, (None, None) otherwise.
 # Required for use with datetime.strftime("%x %x").
 import locale
 locale.setlocale(locale.LC_TIME, '')
 
 from datetime import datetime, timedelta, tzinfo
-import pytz
-from pytz.exceptions import *
+import time
 
-try:
-    basestring
-except NameError:  # Python 3.x
-    basestring = str
+import pytz
+from pytz.exceptions import UnknownTimeZoneError
+
+# import sys
+# if sys.versioninfo[0] != 2:
+#     basestring = str
 
 
 class LocalTimezone(tzinfo):
-    """
-    Helper class which extends datetime.tzinfo and implements the 'local timezone'
-    (a.k.a. 'capturing the platform's idea of local time').
+    """Helper class which extends datetime.tzinfo and implements the 'local timezone'.
+    (Read: captures the platform's idea of local time.)
     Used in FormatDate as default fallback if no pytz timezone string is specified.
 
     Source: http://docs.python.org/library/datetime.html#tzinfo-objects
     """
-
-    import time
 
     STDOFFSET = timedelta(seconds=-time.timezone)
     if time.daylight:
@@ -46,101 +44,102 @@ class LocalTimezone(tzinfo):
 
     def tzname(self, dt):
         # TODO: This is buggy (I hate ASCII)
-        # print self.time.tzname
-        # print unicode(self.time.tzname[0])
-        # return self.time.tzname[self._isdst(dt)].decode('utf-8')
+        # print time.tzname
+        # print unicode(time.tzname[0])
+        # return time.tzname[self._isdst(dt)].decode('utf-8')
         return None
 
     def _isdst(self, dt):
         tt = (dt.year, dt.month, dt.day,
               dt.hour, dt.minute, dt.second,
               dt.weekday(), 0, 0)
-        stamp = self.time.mktime(tt)
-        tt = self.time.localtime(stamp)
+        stamp = time.mktime(tt)
+        tt = time.localtime(stamp)
         return tt.tm_isdst > 0
 
 
 class FormatDate(object):
-    """
-    The actual processing class where conversation and formatting of datetime
-    (between timezones) takes place.
+    """The actual processing class where conversation and formatting of datetime (between timezones)
+    takes place.
 
-    You can pass your own default values to the constructor which will be used
-    if a parameter is missing during the process.
+    You can pass your own default values to the constructor which will be used as default values if
+    a parameter is missing during the process.
 
-    `FormatDate().parse(format=None, tz_in=None, tz_out=None)`
-    is most likely what you'll be using.
+    `FormatDate().parse(format=None, tz_in=None, tz_out=None)` is most likely what you'll be using.
     """
 
-    local = LocalTimezone()
+    local_tz = LocalTimezone()
     default = dict(
-        # TODO: be modifiable from settings
         format="%x %X",
-         tz_in="local"
+        tz_in="local"
     )
 
-    def __init__(self, local=None, default=None):
-        if not local is None:
-            if isinstance(local, tzinfo):
-                self.local = local
+    def __init__(self, local_tz=None, default=None):
+        if local_tz:
+            if isinstance(local_tz, tzinfo):
+                self.local_tz = local_tz
             else:
-                raise TypeError("Parameter 'local' is not instance of datetime.tzinfo")
+                raise TypeError("Parameter 'local' is not an instance of datetime.tzinfo")
 
         if not default is None:
-            try:
-                self.default.update(default)  # just raise the error if it appears
-            except ValueError:
-                raise ValueError("Parameter 'default' is not iterable")
+            self.set_default(default)
+
+    def set_default(self, default):
+        self.default.update(default)
 
     def parse(self, format=None, tz_in=None, tz_out=None):
         dt = self.date_gen(tz_in, tz_out)
         return self.date_format(dt, format)
 
+    def check_tzparam(self, tz, name):
+        if isinstance(tz, basestring):
+            try:
+                return pytz.timezone(tz)
+            except UnknownTimeZoneError:
+                raise UnknownTimeZoneError("Parameter %r = %r is not a valid timezone name"
+                                           % (name, tz))
+
+        if tz is not None and not isinstance(tz, tzinfo):
+            raise TypeError("Parameter %r = %r is not an instance of datetime.tzinfo"
+                            % (name, tz))
+
+        # Nothing else to be done
+        return tz
+
     def date_gen(self, tz_in=None, tz_out=None):
         """Generates the according datetime object using given parameters"""
-        # gather tzinfo data and raise a few exceptions
+        # Check parameters and gather tzinfo data (and raise a few exceptions)
         if tz_in is None:
             tz_in = self.default['tz_in']
 
         if tz_in == "local":
-            tz_in = self.local
+            tz_in = self.local_tz
 
-        if isinstance(tz_in, basestring):
-            try:
-                tz_in = pytz.timezone(tz_in)
-            except UnknownTimeZoneError:
-                raise UnknownTimeZoneError("Parameter %r=%r is not a valid timezone name" % ('tz_in', tz_in))
+        tz_in  = self.check_tzparam(tz_in,  'tz_in')
+        tz_out = self.check_tzparam(tz_out, 'tz_out')
 
-        if not isinstance(tz_in, tzinfo):
-            raise TypeError("Parameter 'tz_in' is not instance of datetime.tzinfo")
-
-        try:
-            tz_out = pytz.timezone(tz_out) if (tz_out is not None) else tz_in
-        except UnknownTimeZoneError:
-            raise UnknownTimeZoneError("Parameter %r=%r is not a valid timezone name" % ('tz_out', tz_out))
-
-        # get timedata
+        # Get timedata
         try:
             dt = tz_in.localize(datetime.now())
         except AttributeError:
+            # Fallback for non-pytz timezones ('local')
             dt = datetime.now(tz=tz_in)
 
-        # process timedata
+        # Process timedata
         # TODO: shift datetime here | split into other function(s)
-        if tz_out is tz_in:
+        if not tz_out:
             return dt
 
+        # Adjust timedata for target timezone
         dt = dt.astimezone(tz_out)
         try:
             return tz_out.normalize(dt)
         except AttributeError:
-            pass
-
-        return dt
+            # Fallback for non-pytz timezones ('local')
+            return dt
 
     def date_format(self, dt, format=None):
-        """
-        Formats the given datetime object using `format` string.
+        """Formats the given datetime object using `format` string.
 
         Differs from normal datetime.strftime function because I implemented
         some additional values (like 'iso') and a fallback for `format=None`
