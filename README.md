@@ -98,6 +98,6 @@ Notes:<br />
 [strptime]: http://docs.python.org/py3k/library/datetime.html#strftime-strptime-behavior "Python docs: 7.1.8. strftime() and strptime() Behavior"
 [pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
 
-[keymap]: https://github.com/FichteFoll/sublimetext-insertdate/blob/master/Default.sublime-keymap "Default.sublime-keymap"
-[keymap-osx]: https://github.com/FichteFoll/sublimetext-insertdate/blob/master/Default%20%28OSX%29.sublime-keymap "Default (OSX).sublime-keymap"
+[keymap]: Default.sublime-keymap "Default.sublime-keymap"
+[keymap-osx]: Default%20%28OSX%29.sublime-keymap "Default (OSX).sublime-keymap"
 [timezones]: https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101 "List of timezones in source"
