@@ -1,0 +1,69 @@
+[
+    {
+        "id": "preferences",
+        "children":
+        [
+            {
+                // Include this information in case it is the only package using that menu
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children":
+                [
+                    {
+                        "caption": "InsertDate",
+                        "children":
+                        [
+                            // README
+                            {
+                                "caption": "README.md",
+                                "command": "open_file",
+                                "args": {"file": "${packages}/InsertDate/README.md"}
+                            },
+                            { "caption": "-"},
+                            // Settings - Default
+                            {
+                                "caption": "Settings – Default",
+                                "command": "open_file",
+                                "args": {"file": "${packages}/InsertDate/insert_date.sublime-settings"}
+                            },
+                            // Settings - User
+                            {
+                                "caption": "Settings – User",
+                                "command": "open_file",
+                                "args": {"file": "${packages}/User/insert_date.sublime-settings"}
+                            },
+                            // Key Bindings - Default (Windows)
+                            {
+                                "caption": "Key Bindings – Default",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/InsertDate/Default.sublime-keymap",
+                                    "platform": "Windows"
+                                }
+                            },
+                            // Key Bindings - Default (Linux)
+                            {
+                                "caption": "Key Bindings – Default",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/InsertDate/Default.sublime-keymap",
+                                    "platform": "Linux"
+                                }
+                            },
+                            // Key Bindings - Default (OSX)
+                            {
+                                "caption": "Key Bindings – Default",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/InsertDate/Default (OSX).sublime-keymap",
+                                    "platform": "OSX"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

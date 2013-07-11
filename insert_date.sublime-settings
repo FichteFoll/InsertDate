@@ -1,0 +1,23 @@
+{
+    ////////////////////////////////////////////////////////////////////////////
+    // COPY THIS FILE TO YOUR USER SETTINGS BEFORE MODIFYING IT, OTHERWISE
+    // CHANGES WILL BE OVERWRITTEN WITH EVERY UPDATE!
+    //
+    // Tip: Copy the file, select "Preferences > Package Settings >
+    // InsertDate > Settings - User" and paste.
+    ////////////////////////////////////////////////////////////////////////////
+
+    // This is the format that will be used when no format has been specified
+    // when calling the command. Also used for the "InsertDate: Default"
+    // command from the command palette.
+    // Default: '%x %X'
+    "format": "%x %X",
+
+    // Similar to above, this is the default timezone that will be used when
+    // there was no other incoming timezone specified. Because the default is
+    // set to 'local' it will be interpreted the timezone of your machine. As
+    // of now, 'local' does not support the `%Z` named timezone representation
+    // and it is HIGHLY RECOMMENDED to specify your local pytz timezone here.
+    // Default: 'local'
+    "tz_in": "local"
+}

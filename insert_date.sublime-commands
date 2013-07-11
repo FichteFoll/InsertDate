@@ -1,0 +1,10 @@
+[
+  { "caption": "InsertDate: Default",
+    "command": "insert_date" },
+
+  { "caption": "InsertDate: Custom",
+    "command": "insert_date",
+    "args":
+    { "prompt": true }
+  }
+]
