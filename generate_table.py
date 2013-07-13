@@ -19,7 +19,8 @@ formats = [
     { 'format': "%x %X %Z (UTC%z)",
       'tz_out': "EST"},
     { 'format': "%x %X %Z (UTC%z)",
-      'tz_out': "America/New_York"}
+      'tz_out': "America/New_York"},
+    { 'format': "unix"}
 ]
 fdate = FormatDate()
 formatted = []
@@ -30,8 +31,8 @@ ftext = []
 for s, fmt in zip(formatted, formats):
     params = fmt.copy()
     del params['format']
-    params = len(params) and "`%s`" % params or ''
-    ftext.append( "|`%s`|%s|%s|" % (fmt['format'], params, s))
+    params = "`%s`" % params if params else ''
+    ftext.append("|`%s`|%s|%s|" % (fmt['format'], params, s))
 
 text = '\n'.join(ftext)
 

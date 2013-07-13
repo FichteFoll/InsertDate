@@ -27,16 +27,17 @@ Here are some examples on how the values are interpreted.
 
 | Format string            | Parameters                       | Resulting string                   |
 |:-------------------------|:---------------------------------|:-----------------------------------|
-| `%d/%m/%Y %I:%M %p`      |                                  | 13/05/2012 03:45                   |
-| `%d. %b %y`              |                                  | 13. Mai 12                         |
-| `%H:%M:%S.%f%z`          |                                  | 15:45:26.598000+0200               |
-| `%Y-%m-%dT%H:%M:%S.%f%z` |                                  | 2012-05-13T15:45:26.598000+0200    |
-| `iso`                    | `{'tz_out': 'UTC'}`              | 2012-05-13T13:45:26.598000+00:00   |
-| `%x %X UTC%z`            | `{'tz_in': 'local'}`             | 13.05.2012 15:45:26 UTC+0200       |
-| `%X %Z`                  | `{'tz_in': 'Europe/Berlin'}`     | 15:45:26 CEST                      |
-| `%d/%m/%Y %I:%M %Z`      | `{'tz_in': 'America/St_Johns'}`  | 13/05/2012 03:45 NDT               |
-| `%x %X %Z (UTC%z)`       | `{'tz_out': 'EST'}`              | 13.05.2012 08:45:26 EST (UTC-0500) |
-| `%x %X %Z (UTC%z)`       | `{'tz_out': 'America/New_York'}` | 13.05.2012 09:45:26 EDT (UTC-0400) |
+| `%d/%m/%Y %I:%M %p`      |                                  | 13/07/2013 10:56                   |
+| `%d. %b %y`              |                                  | 13. Jul 13                         |
+| `%H:%M:%S.%f%z`          |                                  | 22:56:15.333000+0200               |
+| `%Y-%m-%dT%H:%M:%S.%f%z` |                                  | 2013-07-13T22:56:15.333000+0200    |
+| `iso`                    | `{'tz_out': 'UTC'}`              | 2013-07-13T20:56:15.333000+00:00   |
+| `%x %X UTC%z`            | `{'tz_in': 'local'}`             | 13.07.2013 22:56:15 UTC+0200       |
+| `%X %Z`                  | `{'tz_in': 'Europe/Berlin'}`     | 22:56:15 CEST                      |
+| `%d/%m/%Y %I:%M %Z`      | `{'tz_in': 'America/St_Johns'}`  | 13/07/2013 10:56 NDT               |
+| `%x %X %Z (UTC%z)`       | `{'tz_out': 'EST'}`              | 13.07.2013 15:56:15 EST (UTC-0500) |
+| `%x %X %Z (UTC%z)`       | `{'tz_out': 'America/New_York'}` | 13.07.2013 16:56:15 EDT (UTC-0400) |
+| `unix`                   |                                  | 1373748975.33                      |
 
 Notes:
 

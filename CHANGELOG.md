@@ -1,6 +1,12 @@
 InsertDate Changelog
 ====================
 
+~current iteration~
+-------------------
+
+- 'unix' format added, representing the seconds since the epoch, in UTC (#2)
+
+
 v0.4.0 (2013-07-11)
 -------------------
 
