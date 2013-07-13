@@ -120,12 +120,9 @@ s = Settings(
 def on_settings_changed():
     # These defaults will be used when the command's parameters are None
     fdate.set_default(s.get_state())
-    print "updated"
 
 on_settings_changed()  # Apply initial settings
 s.set_callback(on_settings_changed)
-
-print s.get_state()
 
 
 # The actual command
@@ -151,7 +148,6 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             return
 
         # Do the actual parse action
-        print format, tz_in, tz_out
         try:
             text = fdate.parse(format, tz_in, tz_out)
         except Exception as e:
