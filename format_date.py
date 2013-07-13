@@ -88,6 +88,11 @@ class FormatDate(object):
         self.default.update(default)
 
     def parse(self, format=None, tz_in=None, tz_out=None):
+        # 'unix'
+        if format == "unix":
+            return str(time.time())
+
+        # anything else
         dt = self.date_gen(tz_in, tz_out)
         return self.date_format(dt, format)
 
@@ -148,7 +153,7 @@ class FormatDate(object):
         if format is None:
             format = self.default['format']
 
-        # 'iso:T'
+        # 'iso', 'iso:T'
         if format.startswith("iso"):
             sep = 'T'
             if len(format) == 5 and format[3] == ':':

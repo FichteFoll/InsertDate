@@ -32,6 +32,10 @@
   { "keys": ["ctrl+f5", "ctrl+u"],
     "command": "insert_date",
     "args": {"format": "%x %X %Z", "tz_out": "UTC"} },
+  // Unix time (seconds since the epoch, in UTC)
+  { "keys": ["ctrl+f5", "ctrl+x"],
+    "command": "insert_date",
+    "args": {"format": "unix"} },
 
 // Prompt for user input, "format" would behave as default text,
 // and insert the datetime using that format string
