@@ -9,7 +9,7 @@ on how to use these modules.
 '''
 
 # The Olson database is updated several times a year.
-OLSON_VERSION = '2012c'
+OLSON_VERSION = '2013b'
 VERSION = OLSON_VERSION
 # Version format for a patch release - only one so far.
 #VERSION = OLSON_VERSION + '.2'
@@ -179,13 +179,14 @@ def timezone(zone):
 
     zone = _unmunge_zone(zone)
     if zone not in _tzinfo_cache:
-        if not zone in all_timezones_set:
+        if zone in all_timezones_set:
+            fp = open_resource(zone)
+            try:
+                _tzinfo_cache[zone] = build_tzinfo(zone, fp)
+            finally:
+                fp.close()
+        else:
             raise UnknownTimeZoneError(zone)
-        fp = open_resource(zone)
-        try:
-            _tzinfo_cache[zone] = build_tzinfo(zone, fp)
-        finally:
-            fp.close()
 
     return _tzinfo_cache[zone]
 
@@ -797,6 +798,7 @@ all_timezones = \
  'Asia/Kashgar',
  'Asia/Kathmandu',
  'Asia/Katmandu',
+ 'Asia/Khandyga',
  'Asia/Kolkata',
  'Asia/Krasnoyarsk',
  'Asia/Kuala_Lumpur',
@@ -838,6 +840,7 @@ all_timezones = \
  'Asia/Ulaanbaatar',
  'Asia/Ulan_Bator',
  'Asia/Urumqi',
+ 'Asia/Ust-Nera',
  'Asia/Vientiane',
  'Asia/Vladivostok',
  'Asia/Yakutsk',
@@ -946,6 +949,7 @@ all_timezones = \
  'Europe/Brussels',
  'Europe/Bucharest',
  'Europe/Budapest',
+ 'Europe/Busingen',
  'Europe/Chisinau',
  'Europe/Copenhagen',
  'Europe/Dublin',
@@ -1353,6 +1357,7 @@ common_timezones = \
  'Asia/Karachi',
  'Asia/Kashgar',
  'Asia/Kathmandu',
+ 'Asia/Khandyga',
  'Asia/Kolkata',
  'Asia/Krasnoyarsk',
  'Asia/Kuala_Lumpur',
@@ -1388,6 +1393,7 @@ common_timezones = \
  'Asia/Tokyo',
  'Asia/Ulaanbaatar',
  'Asia/Urumqi',
+ 'Asia/Ust-Nera',
  'Asia/Vientiane',
  'Asia/Vladivostok',
  'Asia/Yakutsk',
@@ -1430,6 +1436,7 @@ common_timezones = \
  'Europe/Brussels',
  'Europe/Bucharest',
  'Europe/Budapest',
+ 'Europe/Busingen',
  'Europe/Chisinau',
  'Europe/Copenhagen',
  'Europe/Dublin',

@@ -160,7 +160,7 @@ Here is an excerpt of the [default settings][settings]:
 Libraries
 ---------
 
-- ***[pytz-2012c-py2.6][pytz]*** ([ext. download][pytz-down])<br />
+- ***[pytz-2013b][pytz]*** ([ext. download][pytz-down])<br />
      **pytz** by Stuart Bishop is used for displaying and conversion between timezones. **MIT license**
 
 
