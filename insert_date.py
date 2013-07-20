@@ -17,10 +17,14 @@ class Settings(object):
     Settings(
         sublime.load_settings("Preferences.sublime-settings"),
         dict(
-            attribute_name_to_save_as=('settings_key_to_read_from', 'default_value')
+            attr_name_to_save_as=('settings_key_to_read_from', 'default_value'),
+            attr_name_to_save_as2='settings_key_to_read_from_with_default_None',
+            attr_name_and_settings_key_with_default_None=None
             #, ...
         ),
-        on_settings_changed  # optional, callback
+        on_settings_changed,  # optional, callback
+        auto_update  # optional, bool
+                     # (whether the attributes should be kept up to date; default: True)
     )
 
     `settings_changed` will be called when the registered settings changed, and this time for real.
@@ -34,30 +38,38 @@ class Settings(object):
             Reads all the settings and saves them in their respective attributes.
         * has_changed()
             Returns a boolean if the currently cached settings differ.
-        * register(callback)
-            Runs `add_on_change` for all settings defined with `callback` as the second parameter.
-            You usually want to use `set_callback` instead.
-        * unregister()
-            See above, `clear_on_change`.
         * get_state()
-            Returns a dict with the tracked settings as keys and their values (not the attribute
+            Returns a dict with the tracked settings as keys and their values (NOT the attribute
             names). With the above example: `{"settings_key_to_read_from": 'current_value'}`.
-        * set_callback(callback)
+        * get_real_state()
+            Same as above but ALWAYS returns the actual current values in the settings object.
+        * set_callback(callback, auto_update=True)
             Calls `callback` whenever a tracked setting's value changes. See above on why this
             behavior differs to `register`.
-        * clear_callback()
+            If `auto_update` is true it will automatically update the attributes when the settings
+            changes. This is always true when a callback is set.
+        * clear_callback(clear_auto_update=False)
             Clears the callback set above and returns it in the process.
     """
     _sobj = None
     _settings = None
     _callback = None
+    _auto_update = False
 
-    def __init__(self, settings_obj, settings, callback=None):
+    def __init__(self, settings_obj, settings, callback=None, auto_update=True):
         self._sobj = settings_obj
+
+        for k, v in settings.items():
+            if v is None:
+                # Use the attr name as settings key and `None` as default
+                settings[k] = (k, None)
+            if isinstance(v, basestring):
+                # Set default to `None` if a string was supplied
+                settings[k] = (v, None)
         self._settings = settings
 
         self.update()
-        self.set_callback(callback)
+        self.set_callback(callback, auto_update)
 
     def update(self):
         for attr, (name, def_value) in self._settings.items():
@@ -67,41 +79,45 @@ class Settings(object):
         # Only trigger if relevant settings changed
         if self.has_changed():
             self.update()
-            self._callback()
+            if self._callback:
+                self._callback()
 
-    def has_changed(self):
-        for attr, (name, def_value) in self._settings.items():
-            if getattr(self, attr) != self._sobj.get(name, def_value):
-                return True
-
-        return False
-
-    def register(self, callback):
+    def _register(self, callback):
         for name, _ in self._settings.values():
             self._sobj.add_on_change(name, callback)
 
-    def unregister(self):
+    def _unregister(self):
         for name, _ in self._settings.values():
             self._sobj.clear_on_change(name)
 
+    def has_changed(self):
+        return self.get_state() != self.get_real_state()
+
     def get_state(self):
+        return dict((name, getattr(self, attr))
+                    for attr, (name, _) in self._settings.items())
+
+    def get_real_state(self):
         return dict((name, self._sobj.get(name, def_value))
                     for name, def_value in self._settings.values())
 
-    def set_callback(self, callback):
-        if callable(callback):
-            if not self._callback:
-                # Order actually matters
-                self._callback = callback
-                self.register(self._on_change)
-            else:
-                self._callback = callback
+    def set_callback(self, callback, auto_update=True):
+        if callback is not None and not callable(callback):
+            raise TypeError("callback must be callable")
 
-    def clear_callback(self):
         cb = self._callback
-        if cb:
-            self.unregister(self._on_change)
-            self._callback = None
+        self._callback = callback
+        if (not cb and not self._auto_update) and (callback or auto_update):
+            self._register(self._on_change)
+
+        self._auto_update = auto_update
+        return cb
+
+    def clear_callback(self, clear_auto_update=False):
+        cb = self._callback
+        if cb or not self._auto_update or clear_auto_update:
+            self._unregister()
+        self._callback = None
         return cb
 
 # Instantiate global variables
@@ -127,7 +143,8 @@ s.set_callback(on_settings_changed)
 
 # The actual command
 class InsertDateCommand(sublime_plugin.TextCommand):
-    """Prints Date according to given format string"""
+    """Prints Date according to given format string
+    """
 
     def run(self, edit, format=None, prompt=False, tz_in=None, tz_out=None):
         if prompt:
@@ -160,7 +177,6 @@ class InsertDateCommand(sublime_plugin.TextCommand):
 
         # Fix potential unicode/codepage issues
         if type(text) == str:
-            # print(text)
             try:
                 text = text.decode(locale.getpreferredencoding())
             except UnicodeDecodeError:
