@@ -32,17 +32,17 @@ Here are some examples on how the values are interpreted.
 | `%H:%M:%S.%f%z`          |                                  | 22:56:15.333000+0200               |
 | `%Y-%m-%dT%H:%M:%S.%f%z` |                                  | 2013-07-13T22:56:15.333000+0200    |
 | `iso`                    | `{'tz_out': 'UTC'}`              | 2013-07-13T20:56:15.333000+00:00   |
-| `%x %X UTC%z`            | `{'tz_in': 'local'}`             | 13.07.2013 22:56:15 UTC+0200       |
+| `%c UTC%z`               | `{'tz_in': 'local'}`             | 13.07.2013 22:56:15 UTC+0200       |
 | `%X %Z`                  | `{'tz_in': 'Europe/Berlin'}`     | 22:56:15 CEST                      |
 | `%d/%m/%Y %I:%M %Z`      | `{'tz_in': 'America/St_Johns'}`  | 13/07/2013 10:56 NDT               |
-| `%x %X %Z (UTC%z)`       | `{'tz_out': 'EST'}`              | 13.07.2013 15:56:15 EST (UTC-0500) |
+| `%c %Z (UTC%z)`          | `{'tz_out': 'EST'}`              | 13.07.2013 15:56:15 EST (UTC-0500) |
 | `%x %X %Z (UTC%z)`       | `{'tz_out': 'America/New_York'}` | 13.07.2013 16:56:15 EDT (UTC-0400) |
 | `unix`                   |                                  | 1373748975.33                      |
 
 Notes:
 
 - `Europe/Berlin` is my actual timezone.
-- `%x` and `%X` are representative for *Locale’s appropriate time representation*.
+- `%c`, `%x` and `%X` are representative for *Locale’s appropriate time representation*.
 - `%p` also corresponds to the locale's setting, thus using `%p` e.g. on a German system gives an empty string.
 
 
@@ -53,7 +53,7 @@ Command Reference
 
 Parameters:
 
-- format (str) - Default: `'%x %X'`
+- format (str) - Default: `'%c'`
 
   A format string which is used to display the current time. See below for more information.
 

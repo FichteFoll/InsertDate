@@ -23,7 +23,7 @@
   // Locale date and time with timezone name (not for 'local' timezone)
   { "keys": ["super+f5", "super+z"],
     "command": "insert_date",
-    "args": {"format": "%x %X %Z"} },
+    "args": {"format": "%c %Z"} },
   // Full iso date and time
   { "keys": ["super+f5", "super+i"],
     "command": "insert_date",
@@ -31,7 +31,7 @@
   // Locale date and time converted to UTC (with timezone name)
   { "keys": ["super+f5", "super+u"],
     "command": "insert_date",
-    "args": {"format": "%x %X %Z", "tz_out": "UTC"} },
+    "args": {"format": "%c %Z", "tz_out": "UTC"} },
   // Unix time (seconds since the epoch, in UTC)
   { "keys": ["super+f5", "super+x"],
     "command": "insert_date",

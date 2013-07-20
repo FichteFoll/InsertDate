@@ -126,7 +126,7 @@ fdate = FormatDate()
 s = Settings(
     sublime.load_settings('insert_date.sublime-settings'),
     settings=dict(
-        format=('format', '%x %X'),
+        format=('format', '%c'),
         tz_in=('tz_in', 'local')
     )
 )

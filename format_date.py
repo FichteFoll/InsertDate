@@ -1,5 +1,5 @@
 # This loads the actual systems time local_tze, (None, None) otherwise.
-# Required for use with datetime.strftime("%x %x").
+# Required for use with datetime.strftime("%c %x %X").
 import locale
 locale.setlocale(locale.LC_TIME, '')
 
@@ -70,7 +70,7 @@ class FormatDate(object):
 
     local_tz = LocalTimezone()
     default = dict(
-        format="%x %X",
+        format="%c",
         tz_in="local"
     )
 
