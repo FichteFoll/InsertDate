@@ -7,8 +7,11 @@ try:
 except NameError:
     from sets import Set as set
 
-import pytz
-from pytz.exceptions import AmbiguousTimeError, NonExistentTimeError
+try:
+    import pytz
+    from pytz.exceptions import AmbiguousTimeError, NonExistentTimeError
+except ImportError:
+    from .exceptions import AmbiguousTimeError, NonExistentTimeError
 
 __all__ = []
 
@@ -143,7 +146,7 @@ class StaticTzInfo(BaseTzInfo):
     def __reduce__(self):
         # Special pickle to zone remains a singleton and to cope with
         # database changes. 
-        return pytz._p, (self.zone,)
+        return unpickler, (self.zone,)
 
 
 class DstTzInfo(BaseTzInfo):
@@ -502,7 +505,7 @@ class DstTzInfo(BaseTzInfo):
     def __reduce__(self):
         # Special pickle to zone remains a singleton and to cope with
         # database changes.
-        return pytz._p, (
+        return pytz.unpickler, (
                 self.zone,
                 _to_seconds(self._utcoffset),
                 _to_seconds(self._dst),
@@ -561,3 +564,4 @@ def unpickler(zone, utcoffset=None, dstoffset=None, tzname=None):
     tz._tzinfos[inf] = tz.__class__(inf, tz._tzinfos)
     return tz._tzinfos[inf]
 
+unpickler.__safe_for_unpickling__ = True

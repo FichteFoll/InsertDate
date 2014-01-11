@@ -1,9 +1,23 @@
 import locale
-from functools import partial
-from format_date import FormatDate
 
 import sublime
 import sublime_plugin
+
+try:
+    from .format_date import FormatDate  # ST3
+except ValueError:
+    from format_date import FormatDate  # ST2
+
+
+ST2 = int(sublime.version()) < 3000
+
+if not ST2:
+    basestring = str
+
+# Global variables
+fdate = FormatDate()
+# Global settings object
+s = None
 
 
 # I wrote this for InactivePanes, but why not just use it here as well?
@@ -120,26 +134,6 @@ class Settings(object):
         self._callback = None
         return cb
 
-# Instantiate global variables
-fdate = FormatDate()
-
-s = Settings(
-    sublime.load_settings('insert_date.sublime-settings'),
-    settings=dict(
-        format=('format', '%c'),
-        tz_in=('tz_in', 'local')
-    )
-)
-
-
-# Register on settings changes
-def on_settings_changed():
-    # These defaults will be used when the command's parameters are None
-    fdate.set_default(s.get_state())
-
-on_settings_changed()  # Apply initial settings
-s.set_callback(on_settings_changed)
-
 
 # The actual command
 class InsertDateCommand(sublime_plugin.TextCommand):
@@ -153,8 +147,9 @@ class InsertDateCommand(sublime_plugin.TextCommand):
                 "Date format string:",
                 # Default text
                 str(format) if format else '',
-                # on_done callback (call this function again)
-                partial(self.run, edit, tz_in=tz_in, tz_out=tz_out),
+                # on_done callback (call this command again)
+                lambda f: self.view.run_command("insert_date",
+                                                {"format": f, "tz_in": tz_in, "tz_out": tz_out}),
                 # Unnecessary callbacks
                 None, None
             )
@@ -176,7 +171,7 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             return
 
         # Fix potential unicode/codepage issues
-        if type(text) == str:
+        if ST2 and isinstance(text, str):
             try:
                 text = text.decode(locale.getpreferredencoding())
             except UnicodeDecodeError:
@@ -189,3 +184,38 @@ class InsertDateCommand(sublime_plugin.TextCommand):
                 self.view.insert (edit, r.a, text)
             else:
                 self.view.replace(edit, r,   text)
+
+
+# Handle context
+def plugin_loaded():
+    global s, fdate
+
+    s = Settings(
+        sublime.load_settings('insert_date.sublime-settings'),
+        settings=dict(
+            format=('format', '%c'),
+            tz_in=('tz_in', 'local')
+        )
+    )
+
+    # Register on settings changes
+    def on_settings_changed():
+        print("InsertDate settings changed")
+        # These defaults will be used when the command's parameters are None
+        fdate.set_default(s.get_state())
+
+    on_settings_changed()  # Apply initial settings
+    s.set_callback(on_settings_changed)
+
+
+def plugin_unloaded():
+    global s
+
+    s.clear_callback(True)
+
+# ST2 backwards (and don't call it twice in ST3)
+unload_handler = plugin_unloaded if ST2 else lambda: None
+
+# Call manually if on ST2
+if ST2:
+    plugin_loaded()

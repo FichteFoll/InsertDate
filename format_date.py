@@ -6,12 +6,16 @@ locale.setlocale(locale.LC_TIME, '')
 from datetime import datetime, timedelta, tzinfo
 import time
 
-import pytz
-from pytz.exceptions import UnknownTimeZoneError
+try:
+    from . import pytz
+    from .pytz.exceptions import UnknownTimeZoneError
+except ValueError:
+    import pytz
+    from pytz.exceptions import UnknownTimeZoneError
 
-# import sys
-# if sys.versioninfo[0] != 2:
-#     basestring = str
+import sys
+if sys.version_info[0] != 2:
+    basestring = str
 
 
 class LocalTimezone(tzinfo):
@@ -157,7 +161,7 @@ class FormatDate(object):
         if format.startswith("iso"):
             sep = 'T'
             if len(format) == 5 and format[3] == ':':
-                sep = str(format[-1])  # convert from unicode
+                sep = str(format[-1])  # convert from unicode (ST2)
             return dt.isoformat(sep)
 
         return dt.strftime(format)
