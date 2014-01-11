@@ -1,7 +1,10 @@
 """This is just the code I use to generate the example table for the readme.
 """
 
-from format_date import FormatDate
+try:
+    from format_date import FormatDate
+except ImportError:
+    from .format_date import FormatDate
 
 formats = [
     { 'format': "%d/%m/%Y %I:%M %p"},
