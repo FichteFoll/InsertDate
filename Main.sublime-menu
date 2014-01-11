@@ -12,6 +12,7 @@
                 [
                     {
                         "caption": "InsertDate",
+                        "id": "insertdate",
                         "children":
                         [
                             // README
