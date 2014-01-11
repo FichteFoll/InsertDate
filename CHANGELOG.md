@@ -1,7 +1,7 @@
 InsertDate Changelog
 ====================
 
-~current iteration~
+v0.5.1 (2014-01-11)
 -------------------
 
 - Added a panel to choose a format from, configurable via settings
