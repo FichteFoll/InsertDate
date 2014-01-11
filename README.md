@@ -2,7 +2,7 @@
 SublimeText - InsertDate
 ========================
 
-A plugin for Sublime Text 2 that inserts the current date and/or time according to the format specified and supports named timezones (preferrably using [pytz][pytz], but can interpret the locale's timezone settings if necessary).
+A plugin for Sublime Text **2 and 3** that inserts the current date and/or time according to the format specified and supports named timezones (preferrably using [pytz][pytz], but can interpret the locale's timezone settings if necessary).
 
 For more information about the accepted formatting syntax, see <http://strfti.me/>.
 
@@ -12,7 +12,7 @@ Install
 
 ### Package Control ###
 
-You can install this package with [Package Control][pck-ctrl] under `InsertDate`.
+You can install this package with [Package Control][pck-ctrl] under [`InsertDate`][pck-browse].
 
 ### Alternative ###
 
@@ -87,14 +87,14 @@ For more information about the accepted formatting syntax, see <http://strfti.me
 
 | Format string            | Parameters                       | Resulting string                   |
 |:-------------------------|:---------------------------------|:-----------------------------------|
-| `%d/%m/%Y %I:%M %p`      |                                  | 13/07/2013 10:56                   |
+| `%m/%d/%Y %I:%M %p`      |                                  | 07/13/2013 10:56                   |
 | `%d. %b %y`              |                                  | 13. Jul 13                         |
 | `%H:%M:%S.%f%z`          |                                  | 22:56:15.333000+0200               |
 | `%Y-%m-%dT%H:%M:%S.%f%z` |                                  | 2013-07-13T22:56:15.333000+0200    |
 | `iso`                    | `{'tz_out': 'UTC'}`              | 2013-07-13T20:56:15.333000+00:00   |
 | `%c UTC%z`               | `{'tz_in': 'local'}`             | 13.07.2013 22:56:15 UTC+0200       |
 | `%X %Z`                  | `{'tz_in': 'Europe/Berlin'}`     | 22:56:15 CEST                      |
-| `%d/%m/%Y %I:%M %Z`      | `{'tz_in': 'America/St_Johns'}`  | 13/07/2013 10:56 NDT               |
+| `%m/%d/%Y %I:%M %Z`      | `{'tz_in': 'America/St_Johns'}`  | 07/13/2013 10:56 NDT               |
 | `%c %Z (UTC%z)`          | `{'tz_out': 'EST'}`              | 13.07.2013 15:56:15 EST (UTC-0500) |
 | `%x %X %Z (UTC%z)`       | `{'tz_out': 'America/New_York'}` | 13.07.2013 16:56:15 EDT (UTC-0400) |
 | `unix`                   |                                  | 1373748975.33                      |
@@ -113,7 +113,7 @@ For more information about the accepted formatting syntax, see <http://strfti.me
 
 *Parameters*
 
-- **format** (str) - *Default*: `'%c'`
+- **format** (str) - *Default*: `'%c'` (configurable in settings)
 
   A format string which is used to display the current time. See <http://strfti.me/> for reference and  [`datetime.strftime()` behavior][strftime] for all details.
 
@@ -122,7 +122,7 @@ For more information about the accepted formatting syntax, see <http://strfti.me
   If `True` a small popup window will be displayed where you can specify the format string manually.
   The string passed in `format` will be used as default text if available.
 
-- **tz_in** (str) - *Default*: `'local'`
+- **tz_in** (str) - *Default*: `'local'` (configurable in settings, recommended to change)
 
   Defines in which timezone the current time (read from your system) will be interpreted. Required if you want `%Z` (your timezone's name).
   May be one of [these][timezones] values or `'local'`.
@@ -169,7 +169,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2013 FichteFoll
+Copyright (c) 2014 FichteFoll
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -207,11 +207,12 @@ ToDo
 [releases]: https://github.com/FichteFoll/sublimetext-insertdate/releases "Releases - FichteFoll/sublime-insertdate"
 
 [pck-ctrl]: http://wbond.net/sublime_packages/package_control "Sublime Package Control by wbond"
+[pck-browse]: https://sublime.wbond.net/packages/InsertDate "InsertDate - Packages - Package Control"
 [data-dir]: http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory
 [packages-dir]: http://docs.sublimetext.info/en/latest/basic_concepts.html#the-packages-directory
 
 [pytz]: http://pytz.sourceforge.net/ "pytz - World Timezone Definitions for Python"
-[strftime]: http://docs.python.org/py3k/library/datetime.html#strftime-strftime-behavior "Python docs: 7.1.8. strftime() and strftime() Behavior"
+[strftime]: http://docs.python.org/3/library/datetime.html#strftime-strptime-behavior "Python docs: 8.1.8. strftime() and strptime() Behavior"
 [pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
 
 [keymap]: Default.sublime-keymap "Default.sublime-keymap"

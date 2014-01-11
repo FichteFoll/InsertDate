@@ -4,6 +4,8 @@ InsertDate Changelog
 ~current iteration~
 -------------------
 
+- **InsertDate is now ST3-compatible!**
+
 - Default to `%c` instead of `%x %X` which is more accurate
 - 'unix' format added, representing the seconds since the epoch, in UTC (#2)
 
