@@ -1,8 +1,8 @@
-========================
-SublimeText - InsertDate
-========================
+===============================
+InsertDate - SublimeText Plugin
+===============================
 
-A plugin for Sublime Text **2 and 3** that inserts the current date and/or time according to the format specified and supports named timezones (preferrably using [pytz][pytz], but can interpret the locale's timezone settings if necessary).
+A plugin for Sublime Text **2 and 3** that inserts the current date and/or time according to the format specified and supports named timezones (using [pytz][pytz], but can interpret the locale's timezone settings if necessary).
 
 For more information about the accepted formatting syntax, see <http://strfti.me/>.
 
@@ -28,12 +28,12 @@ Usage
 
 ### Command Examples ###
 
-These are the [default key bindings][keymap] (on [OSX][keymap-osx]: `super` instead of `ctrl`):
+The following is an excerpt of the [default key bindings][keymap] (on [OSX][keymap-osx]: `super` instead of `ctrl`):
 
 ```js
 [
 // Insert datetime using default format text
-  { "keys": ["f5"],
+  { "keys": ["ctrl+f5", "ctrl+f5"],
     "command": "insert_date" },
 
 // Insert datetime using the specified format
@@ -41,41 +41,41 @@ These are the [default key bindings][keymap] (on [OSX][keymap-osx]: `super` inst
   { "keys": ["ctrl+f5", "ctrl+d"],
     "command": "insert_date",
     "args": {"format": "%x"} },
-  // iso date (YYYY-MM-DD)
-  { "keys": ["ctrl+shift+f5", "ctrl+shift+d"],
-    "command": "insert_date",
-    "args": {"format": "%Y-%m-%d"} },
+
   // Locale time
   { "keys": ["ctrl+f5", "ctrl+t"],
     "command": "insert_date",
     "args": {"format": "%X"} },
-  // iso time (HH:MM:SS)
-  { "keys": ["ctrl+shift+f5", "ctrl+shift+t"],
-    "command": "insert_date",
-    "args": {"format": "%H:%M:%S"} },
-  // Locale date and time with timezone name (not for 'local' timezone)
-  { "keys": ["ctrl+f5", "ctrl+z"],
-    "command": "insert_date",
-    "args": {"format": "%c %Z"} },
+
   // Full iso date and time
   { "keys": ["ctrl+f5", "ctrl+i"],
     "command": "insert_date",
     "args": {"format": "iso"} },
+
   // Locale date and time converted to UTC (with timezone name)
   { "keys": ["ctrl+f5", "ctrl+u"],
     "command": "insert_date",
     "args": {"format": "%c %Z", "tz_out": "UTC"} },
+
   // Unix time (seconds since the epoch, in UTC)
   { "keys": ["ctrl+f5", "ctrl+x"],
     "command": "insert_date",
     "args": {"format": "unix"} },
 
-// Prompt for user input, "format" would behave as default text,
+  // ... and many more
+
+// Prompt for user input ("format" arg would behave as default text)
 // and insert the datetime using that format string
   { "keys": ["alt+f5"],
     "command": "insert_date",
+    "args": {"prompt": true} },
+
+// Show the panel with pre-defined options from settings
+  { "keys": ["f5"],
+    "command": "insert_date",
     "args": {"prompt": true} }
 ]
+
 ```
 
 
@@ -109,7 +109,14 @@ For more information about the accepted formatting syntax, see <http://strfti.me
 
 ### Command Reference ###
 
+***insert_date_panel***
+
+Open a quick panel with pre-defined format settings
+
+
 ***insert_date***
+
+Insert the current date/time with specified formatting
 
 *Parameters*
 
@@ -152,7 +159,22 @@ Here is an excerpt of the [default settings][settings]:
     // of now, 'local' does not support the `%Z` named timezone representation
     // and it is HIGHLY RECOMMENDED to specify your local pytz timezone here.
     // Default: 'local'
-    "tz_in": "local"
+    "tz_in": "local",
+
+    // A set of pre-defined settings that are prompted by "promt_insert_time"
+    // and previewed. You can modify this list in your User settings, but be
+    // aware that you remove all these entries when overriding "prompt_config"!
+    // Use "user_prompt_config" if you just want to add a few entries.
+    //
+    // `$default` is replaced by the "format" setting above, unspecified values
+    // remain default.
+    "prompt_config": [ //...
+    ],
+
+    // Works similar to "prompt_config" but is added to the above list.
+    // Supposed to be used by you when you just want to add some entries to the
+    // list.
+    "user_prompt_config": []
 }
 ```
 

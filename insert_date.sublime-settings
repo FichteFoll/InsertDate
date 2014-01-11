@@ -19,5 +19,66 @@
     // of now, 'local' does not support the `%Z` named timezone representation
     // and it is HIGHLY RECOMMENDED to specify your local pytz timezone here.
     // Default: 'local'
-    "tz_in": "local"
+    "tz_in": "local",
+
+    // A set of pre-defined settings that are prompted by "promt_insert_time"
+    // and previewed. You can modify this list in your User settings, but be
+    // aware that you remove all these entries when overriding "prompt_config"!
+    // Use "user_prompt_config" if you just want to add a few entries.
+    //
+    // `$default` is replaced by the "format" setting above, unspecified values
+    // remain default.
+    "prompt_config": [
+        // Default timezone and formats
+        { "name": "Default"
+        },
+        { "name": "Time",
+          "format": "%X"
+        },
+        { "name": "Date",
+          "format": "%x"
+        },
+        // UTC, iso (standards)
+        { "name": "UTC",
+          "tz_out": "UTC"
+        },
+        { "name": "UTC+",
+          "format": "$default (UTC%z)",
+          "tz_out": "UTC"
+        },
+        { "name": "iso",
+          "format": "iso"
+        },
+        { "name": "UTC iso",
+          "format": "iso",
+          "tz_out": "UTC"
+        },
+        // Popular timezones
+        { "name": "EST",
+          "tz_out": "EST"
+        },
+        { "name": "EST+",
+          "format": "$default (UTC%z)",
+          "tz_out": "EST"
+        },
+        { "name": "PST",
+          "tz_out": "PST8PDT"
+        },
+        { "name": "PST+",
+          "format": "$default (UTC%z)",
+          "tz_out": "PST8PDT"
+        },
+        { "name": "CET",
+          "tz_out": "CET"
+        },
+        { "name": "CET+",
+          "format": "$default (UTC%z)",
+          "tz_out": "CET"
+        }
+    ],
+
+    // Works similar to "prompt_config" but is added to the above list.
+    // Supposed to be used by you when you just want to add some entries to the
+    // list.
+    "user_prompt_config": []
 }
