@@ -1,7 +1,7 @@
 InsertDate Changelog
 ====================
 
-~current iteration~
+v0.5.0 (2014-01-11)
 -------------------
 
 - **InsertDate is now ST3-compatible!**
