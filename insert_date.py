@@ -1,5 +1,4 @@
 import locale
-from functools import partial
 
 import sublime
 import sublime_plugin
@@ -148,8 +147,9 @@ class InsertDateCommand(sublime_plugin.TextCommand):
                 "Date format string:",
                 # Default text
                 str(format) if format else '',
-                # on_done callback (call this function again)
-                partial(self.run, edit, tz_in=tz_in, tz_out=tz_out),
+                # on_done callback (call this command again)
+                lambda f: self.view.run_command("insert_date",
+                                                {"format": f, "tz_in": tz_in, "tz_out": tz_out}),
                 # Unnecessary callbacks
                 None, None
             )
