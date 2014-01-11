@@ -13,8 +13,11 @@ except ValueError:
     import pytz
     from pytz.exceptions import UnknownTimeZoneError
 
+# Not using sublime.version here because it's supposed to be used externally too
 import sys
-if sys.version_info[0] != 2:
+ST2 = sys.version_info[0] == 2
+
+if ST2:
     basestring = str
 
 
@@ -88,8 +91,11 @@ class FormatDate(object):
         if not default is None:
             self.set_default(default)
 
-    def set_default(self, default):
-        self.default.update(default)
+    def set_default(self, update):
+        # Update only the keys that are defined in self.default
+        for k, v in update.items():
+            if k in self.default:
+                self.default[k] = v
 
     def parse(self, format=None, tz_in=None, tz_out=None):
         # 'unix'
@@ -98,7 +104,16 @@ class FormatDate(object):
 
         # anything else
         dt = self.date_gen(tz_in, tz_out)
-        return self.date_format(dt, format)
+        text = self.date_format(dt, format)
+
+        # Fix potential unicode/codepage issues
+        if ST2 and isinstance(text, str):
+            try:
+                text = text.decode(locale.getpreferredencoding())
+            except UnicodeDecodeError:
+                text = text.decode('utf-8')
+
+        return text
 
     def check_tzparam(self, tz, name):
         if isinstance(tz, basestring):

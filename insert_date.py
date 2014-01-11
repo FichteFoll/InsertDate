@@ -1,5 +1,3 @@
-import locale
-
 import sublime
 import sublime_plugin
 
@@ -18,6 +16,14 @@ if not ST2:
 fdate = FormatDate()
 # Global settings object
 s = None
+
+
+def status(msg, e=None):
+    msg = "[InsertDate] "
+    sublime.status_message(msg)
+    if e is not None:
+        msg += "\n%s: %s" % (type(e).__name__, e)
+    print(msg)
 
 
 # I wrote this for InactivePanes, but why not just use it here as well?
@@ -135,7 +141,7 @@ class Settings(object):
         return cb
 
 
-# The actual command
+# The actual commands
 class InsertDateCommand(sublime_plugin.TextCommand):
     """Prints Date according to given format string
     """
@@ -155,27 +161,20 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             )
             return  # Call already handled
 
-        if format == '' or (isinstance(format, basestring) and format.isspace()):
-            # Emtpy string or only whitespaces entered in input panel
+        if format == '' or not isinstance(format, basestring) or format.isspace():
+            # Not a string, empty or only whitespaces
             return
 
         # Do the actual parse action
         try:
             text = fdate.parse(format, tz_in, tz_out)
         except Exception as e:
-            sublime.error_message("[InsertDate]\n%s: %s" % (type(e).__name__, e))
+            status('Error parsing format string', e)
             return
 
         # Don't bother replacing selections with actually nothing
         if text == '' or text.isspace():
             return
-
-        # Fix potential unicode/codepage issues
-        if ST2 and isinstance(text, str):
-            try:
-                text = text.decode(locale.getpreferredencoding())
-            except UnicodeDecodeError:
-                text = text.decode('utf-8')
 
         # Do replacements
         for r in self.view.sel():
@@ -186,6 +185,57 @@ class InsertDateCommand(sublime_plugin.TextCommand):
                 self.view.replace(edit, r,   text)
 
 
+class InsertDatePanelCommand(sublime_plugin.TextCommand):
+    """Shows a quick panel with pre-defined and configurable templates that are previewed
+    """
+    panel_cache = []
+    config_map = {}
+
+    def run(self, edit, tz_in=None, tz_out=None):
+        self.panel_cache = []
+        self.config_map = {}
+
+        if not isinstance(s.prompt_config, list):
+            status("`prompt_config` setting is invalid")
+            return
+
+        configs = s.prompt_config
+        if not isinstance(s.user_prompt_config, list):
+            status("`user_prompt_config` setting is invalid")
+        else:
+            configs.extend(s.user_prompt_config)
+
+        # Generate panel cache for quick_panel
+        for conf in configs:
+            # Read config
+            c = dict()
+            c['tz_in']  = tz_in if tz_in else conf.get('tz_in')
+            c['tz_out'] = tz_out if tz_out else conf.get('tz_out')
+            c['format'] = conf.get('format')
+
+            if isinstance(c['format'], basestring):
+                c['format'] = c['format'].replace("$default", fdate.default['format'])
+
+            # Do the actual parse action
+            try:
+                text = fdate.parse(**c)
+            except Exception as e:
+                status('Error parsing format string', e)
+                return
+
+            self.panel_cache.append([conf['name'], text])
+            self.config_map[conf['name']] = c
+
+        self.view.window().show_quick_panel(self.panel_cache, self.on_done)
+
+    def on_done(self, index):
+        if index == -1:
+            return
+
+        name = self.panel_cache[index][0]
+        self.view.run_command("insert_date", self.config_map[name])
+
+
 # Handle context
 def plugin_loaded():
     global s, fdate
@@ -194,7 +244,9 @@ def plugin_loaded():
         sublime.load_settings('insert_date.sublime-settings'),
         settings=dict(
             format=('format', '%c'),
-            tz_in=('tz_in', 'local')
+            tz_in=('tz_in', 'local'),
+            prompt_config=None,
+            user_prompt_config=None
         )
     )
 
