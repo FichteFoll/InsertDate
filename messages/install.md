@@ -52,7 +52,14 @@ Notes:
 Command Reference
 -----------------
 
-**insert_date**
+***insert_date_panel***
+
+Open a quick panel with pre-defined format settings
+
+
+***insert_date***
+
+Insert the current date/time with specified formatting
 
 Parameters:
 

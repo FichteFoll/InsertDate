@@ -5,6 +5,7 @@ InsertDate Changelog
 -------------------
 
 - Added a panel to choose a format from, configurable via settings
+- Changed default keybindings a bit (f5 -> ctrl+f5, ctrl+f5; panel on f5)
 
 
 v0.5.0 (2014-01-11)
