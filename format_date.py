@@ -1,17 +1,21 @@
 # This loads the actual systems time local_tze, (None, None) otherwise.
-# Required for use with datetime.strftime("%x %x").
+# Required for use with datetime.strftime("%c %x %X").
 import locale
 locale.setlocale(locale.LC_TIME, '')
 
 from datetime import datetime, timedelta, tzinfo
 import time
 
-import pytz
-from pytz.exceptions import UnknownTimeZoneError
+try:
+    from . import pytz
+    from .pytz.exceptions import UnknownTimeZoneError
+except ValueError:
+    import pytz
+    from pytz.exceptions import UnknownTimeZoneError
 
-# import sys
-# if sys.versioninfo[0] != 2:
-#     basestring = str
+import sys
+if sys.version_info[0] != 2:
+    basestring = str
 
 
 class LocalTimezone(tzinfo):
@@ -70,7 +74,7 @@ class FormatDate(object):
 
     local_tz = LocalTimezone()
     default = dict(
-        format="%x %X",
+        format="%c",
         tz_in="local"
     )
 
@@ -88,6 +92,11 @@ class FormatDate(object):
         self.default.update(default)
 
     def parse(self, format=None, tz_in=None, tz_out=None):
+        # 'unix'
+        if format == "unix":
+            return str(time.time())
+
+        # anything else
         dt = self.date_gen(tz_in, tz_out)
         return self.date_format(dt, format)
 
@@ -148,11 +157,11 @@ class FormatDate(object):
         if format is None:
             format = self.default['format']
 
-        # 'iso:T'
+        # 'iso', 'iso:T'
         if format.startswith("iso"):
             sep = 'T'
             if len(format) == 5 and format[3] == ':':
-                sep = str(format[-1])  # convert from unicode
+                sep = str(format[-1])  # convert from unicode (ST2)
             return dt.isoformat(sep)
 
         return dt.strftime(format)

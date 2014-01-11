@@ -1,7 +1,10 @@
 """This is just the code I use to generate the example table for the readme.
 """
 
-from format_date import FormatDate
+try:
+    from format_date import FormatDate
+except ImportError:
+    from .format_date import FormatDate
 
 formats = [
     { 'format': "%d/%m/%Y %I:%M %p"},
@@ -10,16 +13,17 @@ formats = [
     { 'format': "%Y-%m-%dT%H:%M:%S.%f%z"},
     { 'format': "iso",
       'tz_out': "UTC"},
-    { 'format': "%x %X UTC%z",
+    { 'format': "%c UTC%z",
       'tz_in':  "local"},
     { 'format': "%X %Z",
       'tz_in':  "Europe/Berlin"},
     { 'format': "%d/%m/%Y %I:%M %Z",
       'tz_in':  "America/St_Johns"},
-    { 'format': "%x %X %Z (UTC%z)",
+    { 'format': "%c %Z (UTC%z)",
       'tz_out': "EST"},
     { 'format': "%x %X %Z (UTC%z)",
-      'tz_out': "America/New_York"}
+      'tz_out': "America/New_York"},
+    { 'format': "unix"}
 ]
 fdate = FormatDate()
 formatted = []
@@ -30,8 +34,8 @@ ftext = []
 for s, fmt in zip(formatted, formats):
     params = fmt.copy()
     del params['format']
-    params = len(params) and "`%s`" % params or ''
-    ftext.append( "|`%s`|%s|%s|" % (fmt['format'], params, s))
+    params = "`%s`" % params if params else ''
+    ftext.append("|`%s`|%s|%s|" % (fmt['format'], params, s))
 
 text = '\n'.join(ftext)
 

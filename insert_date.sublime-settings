@@ -10,8 +10,8 @@
     // This is the format that will be used when no format has been specified
     // when calling the command. Also used for the "InsertDate: Default"
     // command from the command palette.
-    // Default: '%x %X'
-    "format": "%x %X",
+    // Default: '%c'
+    "format": "%c",
 
     // Similar to above, this is the default timezone that will be used when
     // there was no other incoming timezone specified. Because the default is
