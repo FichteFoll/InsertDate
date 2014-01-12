@@ -1,7 +1,7 @@
 InsertDate Changelog
 ====================
 
-~current iteration~
+v0.5.2 (2014-01-12)
 -------------------
 
 - Fixed the package not working at all on both ST2 and ST3 (#7)
