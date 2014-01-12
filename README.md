@@ -1,4 +1,3 @@
-===============================
 InsertDate - SublimeText Plugin
 ===============================
 
@@ -28,7 +27,7 @@ Usage
 
 ### Screenshot ###
 
-The panel opens on <kbd>F5</kbd> and shows a selection of pre-defined settings that can be modified. See [Settings][#settings] on how to do that.
+The panel opens on <kbd>F5</kbd> and shows a selection of pre-defined settings that can be modified. See [Settings](#settings) on how to do that.
 
 [![][scr-panel-thumb]][scr-panel]
 
