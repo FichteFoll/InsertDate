@@ -8,7 +8,7 @@ format and supports named timezones (as well as the locale's timezone settings i
 Key Bindings (and Examples)
 ---------------------------
 
-Browse "Preferences > Package Settings > Insert Date > Key Bindings - Default" for an overview of the default key bindings, which are great examples for usage.
+Browse "Preferences > Package Settings > InsertDate > Key Bindings - Default" for an overview of the default key bindings, which are great examples for usage.
 
 
 Settings

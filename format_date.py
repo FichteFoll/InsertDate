@@ -17,7 +17,7 @@ except ValueError:
 import sys
 ST2 = sys.version_info[0] == 2
 
-if ST2:
+if not ST2:
     basestring = str
 
 

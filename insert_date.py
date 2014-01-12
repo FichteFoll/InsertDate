@@ -16,14 +16,20 @@ if not ST2:
 fdate = FormatDate()
 # Global settings object
 s = None
+# Print tracebacks
+DEBUG = False
 
 
 def status(msg, e=None):
-    msg = "[InsertDate] "
+    msg = "[InsertDate] " + msg
     sublime.status_message(msg)
     if e is not None:
         msg += "\n%s: %s" % (type(e).__name__, e)
     print(msg)
+
+    if e and DEBUG:
+        import traceback
+        traceback.print_exc()
 
 
 # I wrote this for InactivePanes, but why not just use it here as well?
