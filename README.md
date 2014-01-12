@@ -26,6 +26,13 @@ Alternatively you can download a recent [zip archive][releases] and extract it i
 Usage
 -----
 
+### Screenshot ###
+
+The panel opens on <kbd>F5</kbd> and shows a selection of pre-defined settings that can be modified. See [Settings][#settings] on how to do that.
+
+[![][scr-panel-thumb]][scr-panel]
+
+
 ### Command Examples ###
 
 The following is an excerpt of the [default key bindings][keymap] (on [OSX][keymap-osx]: `super` instead of `ctrl`):
@@ -105,6 +112,23 @@ For more information about the accepted formatting syntax, see <http://strfti.me
 - `Europe/Berlin` is my actual timezone.
 - `%c`, `%x` and `%X` are representative for *Locale’s appropriate time representation*.
 - `%p` also corresponds to the locale's setting, thus using `%p` e.g. on a German system gives an empty string.
+
+
+### Snippets Macros ###
+
+You can use the `insert_date` command in combination with snippets and macros. Here is an example:
+
+```json
+[
+    { "command": "insert_snippet", "args": {"contents": "Date: $1\nTime: $2\nSomething else: $0"} },
+    { "command": "insert_date", "args": {"format": "%x"} },
+    { "command": "next_field" },
+    { "command": "insert_date", "args": {"format": "%X"} },
+    { "command": "next_field" }
+]
+```
+
+Check the documentation for [Macros][doc-macros] and [Commands][doc-commands] for further information.
 
 
 ### Command Reference ###
@@ -237,8 +261,14 @@ ToDo
 [strftime]: http://docs.python.org/3/library/datetime.html#strftime-strptime-behavior "Python docs: 8.1.8. strftime() and strptime() Behavior"
 [pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
 
+[scr-panel]: http://i.imgur.com/57S5iH2.png
+[scr-panel-thumb]: http://i.imgur.com/57S5iH2l.png
+
 [keymap]: Default.sublime-keymap "Default.sublime-keymap"
 [keymap-osx]: Default%20%28OSX%29.sublime-keymap "Default (OSX).sublime-keymap"
 [settings]: insert_date.sublime-settings "insert_date.sublime-settings"
+
+[doc-macros]: http://docs.sublimetext.info/en/latest/extensibility/macros.html
+[doc-commands]: http://docs.sublimetext.info/en/latest/reference/commands.html
 
 [timezones]: https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101 "List of timezones in source"
