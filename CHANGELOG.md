@@ -5,6 +5,7 @@ InsertDate Changelog
 -------------------
 
 - Fixed the package not working at all on both ST2 and ST3 (#7)
+- Added instructions for usage in macros/snippets
 
 
 v0.5.1 (2014-01-11)
