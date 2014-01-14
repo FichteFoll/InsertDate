@@ -1,7 +1,7 @@
 InsertDate Changelog
 ====================
 
-~current iteration~
+v0.5.3 (2014-01-14)
 -------------------
 
 - Fixed the default format (format=None) being ignored (#8)
