@@ -167,9 +167,10 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             )
             return  # Call already handled
 
-        if format == '' or not isinstance(format, basestring) or format.isspace():
-            # Not a string, empty or only whitespaces
-            return
+        if format is not None:
+            if format == '' or not isinstance(format, basestring) or format.isspace():
+                # Not a string, empty or only whitespaces
+                return
 
         # Do the actual parse action
         try:
@@ -239,6 +240,7 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             return
 
         name = self.panel_cache[index][0]
+        print("config", self.config_map[name])
         self.view.run_command("insert_date", self.config_map[name])
 
 
