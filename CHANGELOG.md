@@ -1,10 +1,10 @@
 InsertDate Changelog
 ====================
 
-~current iteration~
+v0.5.4 (2014-02-19)
 -------------------
 
-- Fixed pytz loading for packed package format in ST3 (#10)
+- Fixed pytz loading for packed packages in ST3 (#10)
 
 
 v0.5.3 (2014-01-14)
