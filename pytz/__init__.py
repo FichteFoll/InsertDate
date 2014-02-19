@@ -44,10 +44,16 @@ except ImportError:
     from .exceptions import AmbiguousTimeError, InvalidTimeError, NonExistentTimeError, UnknownTimeZoneError
     from .tzfile import build_tzinfo
 
+zf = None
 try:
     unicode
 
 except NameError:  # Python 3.x
+    # Special handling for ST3 packed packages
+    if __path__[0].endswith(".sublime-package"):
+        from zipfile import ZipFile
+        # We don't need to close this since ST itself doesn't close its handle too
+        zf = ZipFile(__path__[0])
 
     # Python 3.x doesn't have unicode(), making writing code
     # for Python 2.3 and Python 3.x a pain.
@@ -95,6 +101,10 @@ def open_resource(name):
     for part in name_parts:
         if part == os.path.pardir or os.path.sep in part:
             raise ValueError('Bad path segment: %r' % part)
+
+    # Special handling for ST3 packed packages
+    if zf:
+        return zf.open('pytz/zoneinfo/' + '/'.join(name_parts))
 
     filename = os.path.join(__path__, 'zoneinfo', *name_parts)
     if not os.path.exists(filename) and resource_stream is not None:
