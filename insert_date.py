@@ -2,9 +2,9 @@ import sublime
 import sublime_plugin
 
 try:
-    from .format_date import FormatDate  # ST3
+    from .format_date import FormatDate, UnknownTimeZoneError  # ST3
 except ValueError:
-    from format_date import FormatDate  # ST2
+    from format_date import FormatDate, UnknownTimeZoneError  # ST2
 
 
 ST2 = int(sublime.version()) < 3000
@@ -175,8 +175,11 @@ class InsertDateCommand(sublime_plugin.TextCommand):
         # Do the actual parse action
         try:
             text = fdate.parse(format, tz_in, tz_out)
+        except UnknownTimeZoneError as e:
+            status(str(e).strip('"'), e)
+            return
         except Exception as e:
-            status('Error parsing format string', e)
+            status('Error parsing format string `%s`' % format, e)
             return
 
         # Don't bother replacing selections with actually nothing
@@ -226,8 +229,11 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             # Do the actual parse action
             try:
                 text = fdate.parse(**c)
+            except UnknownTimeZoneError as e:
+                status(str(e).strip('"'), e)
+                return
             except Exception as e:
-                status('Error parsing format string', e)
+                status('Error parsing format string `%s`' % format, e)
                 return
 
             self.panel_cache.append([conf['name'], text])
