@@ -6,12 +6,8 @@ locale.setlocale(locale.LC_TIME, '')
 from datetime import datetime, timedelta, tzinfo
 import time
 
-try:
-    from . import pytz
-    from .pytz.exceptions import UnknownTimeZoneError
-except ValueError:
-    import pytz
-    from pytz.exceptions import UnknownTimeZoneError
+from . import pytz
+from .pytz.exceptions import UnknownTimeZoneError
 
 # Not using sublime.version here because it's supposed to be used externally too
 import sys
@@ -50,10 +46,7 @@ class LocalTimezone(tzinfo):
             return timedelta(0)
 
     def tzname(self, dt):
-        # TODO: This is buggy (I hate ASCII)
-        # print time.tzname
-        # print unicode(time.tzname[0])
-        # return time.tzname[self._isdst(dt)].decode('utf-8')
+        # This is too much of a hassle and will never be as clean as using pytz anyway.
         return None
 
     def _isdst(self, dt):
