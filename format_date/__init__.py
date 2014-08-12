@@ -6,8 +6,12 @@ locale.setlocale(locale.LC_TIME, '')
 from datetime import datetime, timedelta, tzinfo
 import time
 
-from . import pytz
-from .pytz.exceptions import UnknownTimeZoneError
+try:
+    from . import pytz
+    from .pytz.exceptions import UnknownTimeZoneError
+except SystemError:
+    import pytz
+    from pytz.exceptions import UnknownTimeZoneError
 
 # Not using sublime.version here because it's supposed to be used externally too
 import sys
