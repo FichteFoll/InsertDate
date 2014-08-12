@@ -1,29 +1,30 @@
 {
     ////////////////////////////////////////////////////////////////////////////
-    // COPY THIS FILE TO YOUR USER SETTINGS BEFORE MODIFYING IT, OTHERWISE
-    // CHANGES WILL BE OVERWRITTEN WITH EVERY UPDATE!
+    // COPY THE SETTING (+COMMENT) YOU WANT TO MODIFY TO YOUR USER SETTINGS,
+    // OTHERWISE CHANGES WILL BE OVERWRITTEN WITH EVERY UPDATE!
     //
-    // Tip: Copy the file, select "Preferences > Package Settings >
-    // InsertDate > Settings - User" and paste.
+    // Tip: Copy the setting + comment, select "Preferences >
+    // Package Settings > InsertDate > Settings - User" and paste.
     ////////////////////////////////////////////////////////////////////////////
 
-    // This is the format that will be used when no format has been specified
-    // when calling the command. Also used for the "InsertDate: Default"
-    // command from the command palette.
+    // This is the format that will be used as default when no format has been
+    // specified when calling the command. Also used for the "InsertDate:
+    // Default" command from the command palette.
     // Default: '%c'
     "format": "%c",
 
     // Similar to above, this is the default timezone that will be used when
     // there was no other incoming timezone specified. Because the default is
-    // set to 'local' it will be interpreted the timezone of your machine. As
+    // set to 'local' it will be interpreted as the timezone of your machine. As
     // of now, 'local' does not support the `%Z` named timezone representation
-    // and it is HIGHLY RECOMMENDED to specify your local pytz timezone here.
+    // and it is HIGHLY RECOMMENDED to specify your a "pytz timezone" here.
+    // See the readme for a link to the available timezones.
     // Default: 'local'
     "tz_in": "local",
 
     // A set of pre-defined settings that are prompted by "promt_insert_time"
     // and previewed. You can modify this list in your User settings, but be
-    // aware that you remove all these entries when overriding "prompt_config"!
+    // aware that you remove ALL entries when overriding "prompt_config"!
     // Use "user_prompt_config" if you just want to add a few entries.
     //
     // `$default` is replaced by the "format" setting above, unspecified values
