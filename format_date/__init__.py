@@ -81,7 +81,7 @@ class FormatDate(object):
             else:
                 raise TypeError("Parameter 'local' is not an instance of datetime.tzinfo")
 
-        if not default is None:
+        if default is not None:
             self.set_default(default)
 
     def set_default(self, update):
@@ -93,7 +93,7 @@ class FormatDate(object):
     def parse(self, format=None, tz_in=None, tz_out=None):
         # 'unix'
         if format == "unix":
-            return str(time.time())
+            return str(time.time()).split('.')[0]
 
         # anything else
         dt = self.date_gen(tz_in, tz_out)
@@ -170,6 +170,8 @@ class FormatDate(object):
             sep = 'T'
             if len(format) == 5 and format[3] == ':':
                 sep = str(format[-1])  # convert from unicode (ST2)
+            # Set microseconds to 0 because they are practically useless and only add noise
+            dt = dt.replace(microsecond=0)
             return dt.isoformat(sep)
 
         return dt.strftime(format)
