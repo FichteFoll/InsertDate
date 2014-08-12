@@ -52,8 +52,7 @@ except NameError:  # Python 3.x
     # Special handling for ST3 packed packages
     if __path__[0].endswith(".sublime-package"):
         from zipfile import ZipFile
-        # We don't need to close this since ST itself doesn't close its handle too
-        # TODO: We probably should when the plugin is disabled though
+        # This is closed in plugin_unloaded
         zf = ZipFile(__path__[0])
         relpath = '/'.join(__package__.split('.')[1:])
 
