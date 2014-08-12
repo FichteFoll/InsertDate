@@ -46,7 +46,11 @@
         { "name": "iso date",
           "format": "%Y-%m-%d"
         },
-        // UTC,
+        // unix
+        { "name": "unix",
+          "format": "unix"
+        },
+        // UTC
         { "name": "UTC",
           "tz_out": "UTC",
           "format": "$default %Z"
