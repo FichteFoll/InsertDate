@@ -32,33 +32,15 @@
                             {
                                 "caption": "Settings – User",
                                 "command": "open_file",
-                                "args": {"file": "${packages}/User/insert_date.sublime-settings"}
+                                "args": {"file": "${packages}/User/insert_date.sublime-settings", "contents": "{\n\t$0\n}"}
                             },
-                            // Key Bindings - Default (Windows)
+                            { "caption": "-"},
+                            // Key Bindings - Default
                             {
                                 "caption": "Key Bindings – Default",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/InsertDate/Default.sublime-keymap",
-                                    "platform": "Windows"
-                                }
-                            },
-                            // Key Bindings - Default (Linux)
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/InsertDate/Default.sublime-keymap",
-                                    "platform": "Linux"
-                                }
-                            },
-                            // Key Bindings - Default (OSX)
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/InsertDate/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
+                                    "file": "${packages}/InsertDate/Default ($platform).sublime-keymap"
                                 }
                             }
                         ]
