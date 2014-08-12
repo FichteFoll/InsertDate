@@ -1,0 +1,36 @@
+[
+  // Package commands
+  { "caption": "InsertDate: Show Panel",
+    "command": "insert_date_panel"
+  },
+
+  { "caption": "InsertDate: Default",
+    "command": "insert_date"
+  },
+
+  { "caption": "InsertDate: Custom",
+    "command": "insert_date",
+    "args": { "prompt": true }
+  },
+
+  // Configuration files
+  { "caption": "InsertDate: Open README",
+    "command": "open_file",
+    "args": {"file": "${packages}/InsertDate/README.md"}
+  },
+
+  { "caption": "Preferences: InsertDate Settings - Default",
+    "command": "open_file",
+    "args": {"file": "${packages}/InsertDate/insert_date.sublime-settings"}
+  },
+
+  { "caption": "Preferences: InsertDate Settings - User",
+    "command": "open_file",
+    "args": {"file": "${packages}/User/insert_date.sublime-settings", "contents": "{\n\t$0\n}"}
+  },
+
+  { "caption": "Preferences: InsertDate Keybindings - Default",
+    "command": "open_file",
+    "args": {"file": "${packages}/InsertDate/Default ($platform).sublime-keymap"}
+  }
+]

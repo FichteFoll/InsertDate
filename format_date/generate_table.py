@@ -1,10 +1,8 @@
-"""This is just the code I use to generate the example table for the readme.
-"""
+#!/usr/bin/env python3
 
-try:
-    from format_date import FormatDate
-except ImportError:
-    from .format_date import FormatDate
+"""This is just the code I use to generate the example table rows for the readme."""
+
+from __init__ import FormatDate
 
 formats = [
     { 'format': "%d/%m/%Y %I:%M %p"},
@@ -47,4 +45,10 @@ if __name__ != '__main__':
         def run(self, edit):
             self.view.insert(edit, self.view.sel()[0].begin(), text)
 else:
-    print(text)
+    # Put on clipboard
+    from tkinter import Tk
+    r = Tk()
+    r.withdraw()
+    r.clipboard_clear()
+    r.clipboard_append(text)
+    r.destroy()

@@ -52,8 +52,9 @@ except NameError:  # Python 3.x
     # Special handling for ST3 packed packages
     if __path__[0].endswith(".sublime-package"):
         from zipfile import ZipFile
-        # We don't need to close this since ST itself doesn't close its handle too
+        # This is closed in plugin_unloaded
         zf = ZipFile(__path__[0])
+        relpath = '/'.join(__package__.split('.')[1:])
 
     # Python 3.x doesn't have unicode(), making writing code
     # for Python 2.3 and Python 3.x a pain.
@@ -104,7 +105,8 @@ def open_resource(name):
 
     # Special handling for ST3 packed packages
     if zf:
-        return zf.open('pytz/zoneinfo/' + '/'.join(name_parts))
+        # __file__ always has forward slashes after the zip path
+        return zf.open('/'.join([relpath, 'zoneinfo'] + name_parts))
 
     filename = os.path.join(__path__, 'zoneinfo', *name_parts)
     if not os.path.exists(filename) and resource_stream is not None:

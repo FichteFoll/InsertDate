@@ -1,40 +1,32 @@
-InsertDate - SublimeText Plugin
-===============================
+# InsertDate - Sublime Text Plugin
 
-A plugin for Sublime Text **2 and 3** that inserts the current date and/or time according to the format specified and supports named timezones (using [pytz][pytz], but can interpret the locale's timezone settings if necessary).
+A plugin for [Sublime Text][st] 2 and 3 that inserts the current date and/or
+time according to the format specified and supports named timezones.
 
-For more information about the accepted formatting syntax, see <http://strfti.me/>.
-
-
-Install
--------
-
-### Package Control ###
-
-You can install this package with [Package Control][pck-ctrl] under [`InsertDate`][pck-browse].
-
-### Alternative ###
-
-Browse the [Packages][packages-dir] sub-folder of your [Data directory][data-dir] and clone the repo:
-
-    git clone git://github.com/FichteFoll/sublimetext-insertdate.git InsertDate
-
-Alternatively you can download a recent [zip archive][releases] and extract it into an "InsertDate" sub-directory of the Packages dir mentioned above.
+For a brief introduction about the accepted formatting syntax, see
+<http://strfti.me/>.
 
 
-Usage
------
+## Install
 
-### Screenshot ###
+You can install this package with [Package Control][pck-ctrl] under
+[*InsertDate*][pck-browse].
 
-The panel opens on <kbd>F5</kbd> and shows a selection of pre-defined settings that can be modified. See [Settings](#settings) on how to do that.
+
+## Usage
+
+### Screenshot
+
+The panel opens on <kbd>F5</kbd> and shows a selection of pre-defined settings
+that can be modified. See [Settings](#settings) on how to do that.
 
 [![][scr-panel-thumb]][scr-panel]
 
 
-### Command Examples ###
+### Command Examples
 
-The following is an excerpt of the [default key bindings][keymap] (on [OSX][keymap-osx]: `super` instead of `ctrl`):
+The following is an excerpt of the [default key bindings][keymap] (on
+[OSX][keymap-osx]: `super` instead of `ctrl`):
 
 ```js
 [
@@ -85,37 +77,43 @@ The following is an excerpt of the [default key bindings][keymap] (on [OSX][keym
 ```
 
 
-### Format Examples ###
+### Format Examples
 
 Here are some examples on how the values are interpreted.
 
-For more information about the accepted formatting syntax, see <http://strfti.me/>.
+For the accepted formatting syntax, see <http://strfti.me/> for an introduction
+and [`datetime.strftime()` behavior][strftime] for all details.
 
-| Format string            | Parameters                       | Resulting string                   |
-|:-------------------------|:---------------------------------|:-----------------------------------|
-| `%m/%d/%Y %I:%M %p`      |                                  | 07/13/2013 10:56                   |
-| `%d. %b %y`              |                                  | 13. Jul 13                         |
-| `%H:%M:%S.%f%z`          |                                  | 22:56:15.333000+0200               |
-| `%Y-%m-%dT%H:%M:%S.%f%z` |                                  | 2013-07-13T22:56:15.333000+0200    |
-| `iso`                    | `{'tz_out': 'UTC'}`              | 2013-07-13T20:56:15.333000+00:00   |
-| `%c UTC%z`               | `{'tz_in': 'local'}`             | 13.07.2013 22:56:15 UTC+0200       |
-| `%X %Z`                  | `{'tz_in': 'Europe/Berlin'}`     | 22:56:15 CEST                      |
-| `%m/%d/%Y %I:%M %Z`      | `{'tz_in': 'America/St_Johns'}`  | 07/13/2013 10:56 NDT               |
-| `%c %Z (UTC%z)`          | `{'tz_out': 'EST'}`              | 13.07.2013 15:56:15 EST (UTC-0500) |
-| `%x %X %Z (UTC%z)`       | `{'tz_out': 'America/New_York'}` | 13.07.2013 16:56:15 EDT (UTC-0400) |
-| `unix`                   |                                  | 1373748975.33                      |
+For the exact accepted
+
+| Format string              | Parameters                         | Resulting string                     |
+| :------------------------- | :--------------------------------- | :----------------------------------- |
+| `%d/%m/%Y %I:%M %p`        |                                    | 12/08/2014 08:55                     |
+| `%d. %b %y`                |                                    | 12. Aug 14                           |
+| `%H:%M:%S.%f%z`            |                                    | 20:55:00.473603+0200                 |
+| `%Y-%m-%dT%H:%M:%S.%f%z`   |                                    | 2014-08-12T20:55:00.473603+0200      |
+| `iso`                      | `{'tz_out': 'UTC'}`                | 2014-08-12T18:55:00+00:00            |
+| `%c UTC%z`                 | `{'tz_in': 'local'}`               | 12.08.2014 20:55:00 UTC+0200         |
+| `%X %Z`                    | `{'tz_in': 'Europe/Berlin'}`       | 20:55:00 CEST                        |
+| `%d/%m/%Y %I:%M %Z`        | `{'tz_in': 'America/St_Johns'}`    | 12/08/2014 08:55 NDT                 |
+| `%c %Z (UTC%z)`            | `{'tz_out': 'EST'}`                | 12.08.2014 13:55:00 EST (UTC-0500)   |
+| `%x %X %Z (UTC%z)`         | `{'tz_out': 'America/New_York'}`   | 12.08.2014 14:55:00 EDT (UTC-0400)   |
+| `unix`                     |                                    | 1407869700                           |
 
 
 *Notes*:
 
 - `Europe/Berlin` is my actual timezone.
-- `%c`, `%x` and `%X` are representative for *Locale’s appropriate time representation*.
-- `%p` also corresponds to the locale's setting, thus using `%p` e.g. on a German system gives an empty string.
+- `%c`, `%x` and `%X` are representative for *Locale’s appropriate time
+  representation*.
+- `%p` also corresponds to the locale's setting, thus using `%p` e.g. on a
+  German system gives an empty string.
 
 
-### Snippets Macros ###
+### Snippet Macros
 
-You can use the `insert_date` command in combination with snippets and macros. Here is an example:
+You can use the `insert_date` command in combination with snippets using
+macros. Here is an example:
 
 ```json
 [
@@ -130,7 +128,7 @@ You can use the `insert_date` command in combination with snippets and macros. H
 Check the documentation for [Macros][doc-macros] and [Commands][doc-commands] for further information.
 
 
-### Command Reference ###
+### Command Reference
 
 ***insert_date_panel***
 
@@ -145,48 +143,62 @@ Insert the current date/time with specified formatting
 
 - **format** (str) - *Default*: `'%c'` (configurable in settings)
 
-  A format string which is used to display the current time. See <http://strfti.me/> for reference and  [`datetime.strftime()` behavior][strftime] for all details.
+  A format string which is used to display the current time. See
+  <http://strfti.me/> for an introduction and [`datetime.strftime()`
+  behavior][strftime] for all details.
 
 - **prompt** (bool) - *Default*: `False`
 
-  If `True` a small popup window will be displayed where you can specify the format string manually.
-  The string passed in `format` will be used as default text if available.
+  If `True` a small popup window will be displayed where you can specify the
+  format string manually. The string passed in `format` will be used as default
+  text if available.
 
-- **tz_in** (str) - *Default*: `'local'` (configurable in settings, recommended to change)
+- **tz_in** (str) - *Default*: `'local'` (configurable in settings and
+  recommended to change)
 
-  Defines in which timezone the current time (read from your system) will be interpreted. Required if you want `%Z` (your timezone's name).
-  May be one of [these][timezones] values or `'local'`.
+  Defines in which timezone the current time (read from your system) will be
+  interpreted.
+
+   May
+  be one of [these][timezones] values or `'local'`.
 
 - **tz_out** (str) - *Default*: `None`
 
-  Defines on which timezone the output time should be based.<br />
-  May be one of [these][timezones] values or `'local'` (which does not support `%Z` yet, but `%z`).
+  Defines on which timezone the output time should be based.
+
+  By default, uses the same timezone as `tz_in`. May be one of
+  [these][timezones] values or `'local'` (which does not support `%Z`, but
+  `%z`).
 
 
 ### Settings ###
 
-Settings have to be in a corresponding `insert_date.sublime-settings` file.
+Settings can be accessed using the menu (*Preferences > Package Settings >
+InsertDate > Settings - User/Default*) or the command palette ("Preferences:
+InsertDate Settings - User/Default").
+
 Here is an excerpt of the [default settings][settings]:
 
 ```js
 {
-    // This is the format that will be used when no format has been specified
-    // when calling the command. Also used for the "InsertDate: Default"
-    // command from the command palette.
+    // This is the format that will be used as default when no format has been
+    // specified when calling the command. Also used for the "InsertDate:
+    // Default" command from the command palette.
     // Default: '%c'
     "format": "%c",
 
     // Similar to above, this is the default timezone that will be used when
     // there was no other incoming timezone specified. Because the default is
-    // set to 'local' it will be interpreted the timezone of your machine. As
+    // set to 'local' it will be interpreted as the timezone of your machine. As
     // of now, 'local' does not support the `%Z` named timezone representation
-    // and it is HIGHLY RECOMMENDED to specify your local pytz timezone here.
+    // and it is HIGHLY RECOMMENDED to specify your a "pytz timezone" here.
+    // See the readme for a link to the available timezones.
     // Default: 'local'
     "tz_in": "local",
 
     // A set of pre-defined settings that are prompted by "promt_insert_time"
     // and previewed. You can modify this list in your User settings, but be
-    // aware that you remove all these entries when overriding "prompt_config"!
+    // aware that you remove ALL entries when overriding "prompt_config"!
     // Use "user_prompt_config" if you just want to add a few entries.
     //
     // `$default` is replaced by the "format" setting above, unspecified values
@@ -202,15 +214,15 @@ Here is an excerpt of the [default settings][settings]:
 ```
 
 
-Libraries
----------
+## Libraries
 
-- ***[pytz-2013b][pytz]*** ([ext. download][pytz-down])<br />
-     **pytz** by Stuart Bishop is used for displaying and conversion between timezones. **MIT license**
+- ***[pytz-2013b][pytz]*** ([ext. download][pytz-down])
+
+  **pytz** by Stuart Bishop is used for displaying and conversion between
+  timezones. **MIT license**
 
 
-License
--------
+## License
 
 The MIT License (MIT)
 
@@ -235,33 +247,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-ToDo
-----
+## ToDo
 
-- Support `%Z` with `tz_in="local"`
-- Default (fallback) format string to be configured in settings
-- `shift` parameter (`datetime.timedelta(**shift)`)
+- Shift times with a `shift` parameter (`datetime.timedelta(**shift)`)
 - `locale` option to modify `%c %x %X %p` representation?
-- Keep history of recently used format strings and display in a quick panel
 
 
 <!-- Links -->
 
-[github]: https://github.com/FichteFoll/sublimetext-insertdate "Github.com: FichteFoll/sublime-insertdate"
-[zipball]: https://github.com/FichteFoll/sublimetext-insertdate/zipball/master
-[releases]: https://github.com/FichteFoll/sublimetext-insertdate/releases "Releases - FichteFoll/sublime-insertdate"
+[st]: http://sublimetext.com/
 
 [pck-ctrl]: http://wbond.net/sublime_packages/package_control "Sublime Package Control by wbond"
 [pck-browse]: https://sublime.wbond.net/packages/InsertDate "InsertDate - Packages - Package Control"
-[data-dir]: http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory
-[packages-dir]: http://docs.sublimetext.info/en/latest/basic_concepts.html#the-packages-directory
 
 [pytz]: http://pytz.sourceforge.net/ "pytz - World Timezone Definitions for Python"
 [strftime]: http://docs.python.org/3/library/datetime.html#strftime-strptime-behavior "Python docs: 8.1.8. strftime() and strptime() Behavior"
 [pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
 
-[scr-panel]: http://i.imgur.com/57S5iH2.png
-[scr-panel-thumb]: http://i.imgur.com/57S5iH2l.png
+[scr-panel]: http://i.imgur.com/hObkE27.png
+[scr-panel-thumb]: http://i.imgur.com/hObkE27l.png
 
 [keymap]: Default.sublime-keymap "Default.sublime-keymap"
 [keymap-osx]: Default%20%28OSX%29.sublime-keymap "Default (OSX).sublime-keymap"
@@ -270,4 +274,4 @@ ToDo
 [doc-macros]: http://docs.sublimetext.info/en/latest/extensibility/macros.html
 [doc-commands]: http://docs.sublimetext.info/en/latest/reference/commands.html
 
-[timezones]: https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101 "List of timezones in source"
+[timezones]: https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101 "List of available timezones in source"

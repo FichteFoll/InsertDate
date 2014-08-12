@@ -1,29 +1,31 @@
 {
     ////////////////////////////////////////////////////////////////////////////
-    // COPY THIS FILE TO YOUR USER SETTINGS BEFORE MODIFYING IT, OTHERWISE
-    // CHANGES WILL BE OVERWRITTEN WITH EVERY UPDATE!
+    // COPY THE SETTING (+COMMENT) YOU WANT TO MODIFY TO YOUR USER SETTINGS,
+    // OTHERWISE CHANGES WILL BE OVERWRITTEN WITH EVERY UPDATE!
     //
-    // Tip: Copy the file, select "Preferences > Package Settings >
-    // InsertDate > Settings - User" and paste.
+    // Tip: Copy the setting + comment, open the command palette,
+    // select "Preferences: InsertDate Settings - User" and paste.
     ////////////////////////////////////////////////////////////////////////////
 
-    // This is the format that will be used when no format has been specified
-    // when calling the command. Also used for the "InsertDate: Default"
-    // command from the command palette.
+    // This is the format that will be used as default when no format has been
+    // specified when calling the command. Also used for the "InsertDate:
+    // Default" command from the command palette.
     // Default: '%c'
     "format": "%c",
 
     // Similar to above, this is the default timezone that will be used when
     // there was no other incoming timezone specified. Because the default is
-    // set to 'local' it will be interpreted the timezone of your machine. As
+    // set to 'local' it will be interpreted as the timezone of your machine. As
     // of now, 'local' does not support the `%Z` named timezone representation
-    // and it is HIGHLY RECOMMENDED to specify your local pytz timezone here.
+    // and it is HIGHLY RECOMMENDED to specify your a "pytz timezone" here.
+    // All available timezones can be found here:
+    // https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101
     // Default: 'local'
     "tz_in": "local",
 
     // A set of pre-defined settings that are prompted by "promt_insert_time"
     // and previewed. You can modify this list in your User settings, but be
-    // aware that you remove all these entries when overriding "prompt_config"!
+    // aware that you remove ALL entries when overriding "prompt_config"!
     // Use "user_prompt_config" if you just want to add a few entries.
     //
     // `$default` is replaced by the "format" setting above, unspecified values
@@ -38,16 +40,25 @@
         { "name": "Date",
           "format": "%x"
         },
-        // UTC, iso (standards)
+        // iso
+        { "name": "iso",
+          "format": "iso"
+        },
+        { "name": "iso date",
+          "format": "%Y-%m-%d"
+        },
+        // unix
+        { "name": "unix",
+          "format": "unix"
+        },
+        // UTC
         { "name": "UTC",
-          "tz_out": "UTC"
+          "tz_out": "UTC",
+          "format": "$default %Z"
         },
         { "name": "UTC+",
           "format": "$default (UTC%z)",
           "tz_out": "UTC"
-        },
-        { "name": "iso",
-          "format": "iso"
         },
         { "name": "UTC iso",
           "format": "iso",
@@ -55,24 +66,27 @@
         },
         // Popular timezones
         { "name": "EST",
-          "tz_out": "EST"
+          "tz_out": "EST",
+          "format": "$default %Z"
         },
         { "name": "EST+",
-          "format": "$default (UTC%z)",
+          "format": "$default %Z (UTC%z)",
           "tz_out": "EST"
         },
         { "name": "PST",
-          "tz_out": "PST8PDT"
+          "tz_out": "PST8PDT",
+          "format": "$default %Z"
         },
         { "name": "PST+",
-          "format": "$default (UTC%z)",
+          "format": "$default %Z (UTC%z)",
           "tz_out": "PST8PDT"
         },
         { "name": "CET",
-          "tz_out": "CET"
+          "tz_out": "CET",
+          "format": "$default %Z"
         },
         { "name": "CET+",
-          "format": "$default (UTC%z)",
+          "format": "$default %Z (UTC%z)",
           "tz_out": "CET"
         }
     ],
