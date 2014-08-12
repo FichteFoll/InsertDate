@@ -39,16 +39,21 @@
         { "name": "Date",
           "format": "%x"
         },
-        // UTC, iso (standards)
+        // iso
+        { "name": "iso",
+          "format": "iso"
+        },
+        { "name": "iso date",
+          "format": "%Y-%m-%d"
+        },
+        // UTC,
         { "name": "UTC",
-          "tz_out": "UTC"
+          "tz_out": "UTC",
+          "format": "$default %Z"
         },
         { "name": "UTC+",
           "format": "$default (UTC%z)",
           "tz_out": "UTC"
-        },
-        { "name": "iso",
-          "format": "iso"
         },
         { "name": "UTC iso",
           "format": "iso",
@@ -56,24 +61,27 @@
         },
         // Popular timezones
         { "name": "EST",
-          "tz_out": "EST"
+          "tz_out": "EST",
+          "format": "$default %Z"
         },
         { "name": "EST+",
-          "format": "$default (UTC%z)",
+          "format": "$default %Z (UTC%z)",
           "tz_out": "EST"
         },
         { "name": "PST",
-          "tz_out": "PST8PDT"
+          "tz_out": "PST8PDT",
+          "format": "$default %Z"
         },
         { "name": "PST+",
-          "format": "$default (UTC%z)",
+          "format": "$default %Z (UTC%z)",
           "tz_out": "PST8PDT"
         },
         { "name": "CET",
-          "tz_out": "CET"
+          "tz_out": "CET",
+          "format": "$default %Z"
         },
         { "name": "CET+",
-          "format": "$default (UTC%z)",
+          "format": "$default %Z (UTC%z)",
           "tz_out": "CET"
         }
     ],
