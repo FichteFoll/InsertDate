@@ -1,6 +1,12 @@
 InsertDate Changelog
 ====================
 
+~current iteration~
+-------------------
+
+- Fix a bug where the user config was appended to the popup every time. (#13)
+
+
 v0.5.4 (2014-02-19)
 -------------------
 

@@ -149,8 +149,8 @@ class Settings(object):
 
 # The actual commands
 class InsertDateCommand(sublime_plugin.TextCommand):
-    """Prints Date according to given format string
-    """
+
+    """Prints Date according to given format string."""
 
     def run(self, edit, format=None, prompt=False, tz_in=None, tz_out=None):
         if prompt:
@@ -196,8 +196,9 @@ class InsertDateCommand(sublime_plugin.TextCommand):
 
 
 class InsertDatePanelCommand(sublime_plugin.TextCommand):
-    """Shows a quick panel with pre-defined and configurable templates that are previewed
-    """
+
+    """Shows a quick panel with configurable templates that are previewed."""
+
     panel_cache = []
     config_map = {}
 
@@ -213,7 +214,7 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
         if not isinstance(s.user_prompt_config, list):
             status("`user_prompt_config` setting is invalid")
         else:
-            configs.extend(s.user_prompt_config)
+            configs = configs + s.user_prompt_config
 
         # Generate panel cache for quick_panel
         for conf in configs:
