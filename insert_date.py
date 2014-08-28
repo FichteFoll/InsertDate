@@ -247,7 +247,6 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             return
 
         name = self.panel_cache[index][0]
-        print("config", self.config_map[name])
         self.view.run_command("insert_date", self.config_map[name])
 
 
