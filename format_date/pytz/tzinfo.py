@@ -7,11 +7,8 @@ try:
 except NameError:
     from sets import Set as set
 
-try:
-    import pytz
-    from pytz.exceptions import AmbiguousTimeError, NonExistentTimeError
-except ImportError:
-    from .exceptions import AmbiguousTimeError, NonExistentTimeError
+from . import __init__ as pytz
+from .exceptions import AmbiguousTimeError, NonExistentTimeError
 
 __all__ = []
 
@@ -145,14 +142,14 @@ class StaticTzInfo(BaseTzInfo):
 
     def __reduce__(self):
         # Special pickle to zone remains a singleton and to cope with
-        # database changes. 
-        return unpickler, (self.zone,)
+        # database changes.
+        return pytz._p, (self.zone,)
 
 
 class DstTzInfo(BaseTzInfo):
     '''A timezone that has a variable offset from UTC
 
-    The offset might change if daylight savings time comes into effect,
+    The offset might change if daylight saving time comes into effect,
     or at a point in history when the region decides to change their
     timezone definition.
     '''
@@ -251,7 +248,7 @@ class DstTzInfo(BaseTzInfo):
         than passing a tzinfo argument to a datetime constructor.
 
         is_dst is used to determine the correct timezone in the ambigous
-        period at the end of daylight savings time.
+        period at the end of daylight saving time.
 
         >>> from pytz import timezone
         >>> fmt = '%Y-%m-%d %H:%M:%S %Z (%z)'
@@ -267,7 +264,7 @@ class DstTzInfo(BaseTzInfo):
         '1:00:00'
 
         Use is_dst=None to raise an AmbiguousTimeError for ambiguous
-        times at the end of daylight savings
+        times at the end of daylight saving time
 
         >>> try:
         ...     loc_dt1 = amdam.localize(dt, is_dst=None)
@@ -281,7 +278,7 @@ class DstTzInfo(BaseTzInfo):
         True
 
         is_dst is also used to determine the correct timezone in the
-        wallclock times jumped over at the start of daylight savings time.
+        wallclock times jumped over at the start of daylight saving time.
 
         >>> pacific = timezone('US/Pacific')
         >>> dt = datetime(2008, 3, 9, 2, 0, 0)
@@ -505,7 +502,7 @@ class DstTzInfo(BaseTzInfo):
     def __reduce__(self):
         # Special pickle to zone remains a singleton and to cope with
         # database changes.
-        return pytz.unpickler, (
+        return pytz._p, (
                 self.zone,
                 _to_seconds(self._utcoffset),
                 _to_seconds(self._dst),
@@ -564,4 +561,3 @@ def unpickler(zone, utcoffset=None, dstoffset=None, tzname=None):
     tz._tzinfos[inf] = tz.__class__(inf, tz._tzinfos)
     return tz._tzinfos[inf]
 
-unpickler.__safe_for_unpickling__ = True
