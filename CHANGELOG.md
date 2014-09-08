@@ -1,6 +1,13 @@
 InsertDate Changelog
 ====================
 
+v1.0.1 (2014-09-08)
+-------------------
+
+- Updated pytz module
+- Added "$default %Z" to default prompt configurations
+
+
 v1.0.0 (2014-08-12)
 -------------------
 
