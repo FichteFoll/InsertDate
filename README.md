@@ -216,7 +216,7 @@ Here is an excerpt of the [default settings][settings]:
 
 ## Libraries
 
-- ***[pytz-2013b][pytz]*** ([ext. download][pytz-down])
+- ***[pytz-2014.7][pytz]*** ([pypi][pytz-pypi])
 
   **pytz** by Stuart Bishop is used for displaying and conversion between
   timezones. **MIT license**
@@ -237,7 +237,7 @@ Here is an excerpt of the [default settings][settings]:
 
 [pytz]: http://pytz.sourceforge.net/ "pytz - World Timezone Definitions for Python"
 [strftime]: http://docs.python.org/3/library/datetime.html#strftime-strptime-behavior "Python docs: 8.1.8. strftime() and strptime() Behavior"
-[pytz-down]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
+[pytz-pypi]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
 
 [scr-panel]: http://i.imgur.com/hObkE27.png
 [scr-panel-thumb]: http://i.imgur.com/hObkE27l.png
@@ -249,4 +249,4 @@ Here is an excerpt of the [default settings][settings]:
 [doc-macros]: http://docs.sublimetext.info/en/latest/extensibility/macros.html
 [doc-commands]: http://docs.sublimetext.info/en/latest/reference/commands.html
 
-[timezones]: https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101 "List of available timezones in source"
+[timezones]: https://github.com/FichteFoll/sublimetext-insertdate/blob/a940b4c4394022725ba933c7db0deb1fb8d21efe/format_date/pytz/__init__.py#L1090-L1520 "List of common timezones (in source)"
