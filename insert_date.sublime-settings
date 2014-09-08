@@ -40,6 +40,9 @@
         { "name": "Date",
           "format": "%x"
         },
+        { "name": "Default (with timezone)",
+          "format": "$default %Z"
+        },
         // iso
         { "name": "iso",
           "format": "iso"
