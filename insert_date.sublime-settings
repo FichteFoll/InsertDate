@@ -19,7 +19,7 @@
     // of now, 'local' does not support the `%Z` named timezone representation
     // and it is HIGHLY RECOMMENDED to specify your a "pytz timezone" here.
     // All available timezones can be found here:
-    // https://github.com/FichteFoll/sublimetext-insertdate/blob/c879a70e12fb38c86a893b2be7979b4f7111b342/pytz/__init__.py#L527-L1101
+    // https://github.com/FichteFoll/sublimetext-insertdate/blob/a940b4c4394022725ba933c7db0deb1fb8d21efe/format_date/pytz/__init__.py#L1090-L1520
     // Default: 'local'
     "tz_in": "local",
 
@@ -39,6 +39,9 @@
         },
         { "name": "Date",
           "format": "%x"
+        },
+        { "name": "Default (with timezone)",
+          "format": "$default %Z"
         },
         // iso
         { "name": "iso",
