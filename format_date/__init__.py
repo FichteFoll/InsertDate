@@ -1,21 +1,20 @@
-# This loads the actual systems time local_tze, (None, None) otherwise.
-# Required for use with datetime.strftime("%c %x %X").
-import locale
-locale.setlocale(locale.LC_TIME, '')
-
 from datetime import datetime, timedelta, tzinfo
+import locale
+import sys
 import time
 
-try:
-    from . import pytz
-    from .pytz.exceptions import UnknownTimeZoneError
-except SystemError:
-    import pytz
-    from pytz.exceptions import UnknownTimeZoneError
+import pytz
+from pytz.exceptions import UnknownTimeZoneError
+
 
 # Not using sublime.version here because it's supposed to be used externally too
-import sys
 ST2 = sys.version_info[0] == 2
+
+
+# This loads the actual systems time local_tze, (None, None) otherwise.
+# Required for use with datetime.strftime("%c %x %X").
+locale.setlocale(locale.LC_TIME, '')
+
 
 if not ST2:
     basestring = str
