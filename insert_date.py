@@ -195,7 +195,7 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
                 {"format": fmt, "tz_in": tz_in, "tz_out": tz_out}
             )
 
-        self.view.window().show_input_panel(
+        i_panel = self.view.window().show_input_panel(
             # Caption
             "Date format string:",
             # Default text
@@ -205,6 +205,10 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
             # Unnecessary callbacks
             None, None
         )
+
+        # Select the default text
+        i_panel.sel().clear()
+        i_panel.sel().add(sublime.Region(0, i_panel.size()))
 
 
 class InsertDatePanelCommand(sublime_plugin.TextCommand):
