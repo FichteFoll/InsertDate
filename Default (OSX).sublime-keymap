@@ -44,11 +44,10 @@
     "command": "insert_date",
     "args": {"format": "unix"} },
 
-// Prompt for user input ("format" arg would behave as default text)
+// Prompt for user input ("format" behaves as default text)
 // and insert the datetime using that format string
   { "keys": ["alt+f5"],
-    "command": "insert_date",
-    "args": {"prompt": true} },
+    "command": "insert_date_prompt" },
 
 // Show the panel with pre-defined options from settings
   { "keys": ["f5"],

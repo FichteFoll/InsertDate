@@ -9,8 +9,7 @@
   },
 
   { "caption": "InsertDate: Custom",
-    "command": "insert_date",
-    "args": { "prompt": true }
+    "command": "insert_date_prompt"
   },
 
   // Configuration files

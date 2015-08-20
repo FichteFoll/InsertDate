@@ -152,21 +152,7 @@ class InsertDateCommand(sublime_plugin.TextCommand):
 
     """Prints Date according to given format string."""
 
-    def run(self, edit, format=None, prompt=False, tz_in=None, tz_out=None):
-        if prompt:
-            self.view.window().show_input_panel(
-                # Caption
-                "Date format string:",
-                # Default text
-                str(format) if format else '',
-                # on_done callback (call this command again)
-                lambda f: self.view.run_command("insert_date",
-                                                {"format": f, "tz_in": tz_in, "tz_out": tz_out}),
-                # Unnecessary callbacks
-                None, None
-            )
-            return  # Call already handled
-
+    def run(self, edit, format=None, tz_in=None, tz_out=None):
         if format is not None:
             if format == '' or not isinstance(format, basestring) or format.isspace():
                 # Not a string, empty or only whitespaces
@@ -190,9 +176,35 @@ class InsertDateCommand(sublime_plugin.TextCommand):
         for r in self.view.sel():
             # Insert when sel is empty to not select the contents
             if r.empty():
-                self.view.insert (edit, r.a, text)
+                self.view.insert(edit, r.a, text)
             else:
-                self.view.replace(edit, r,   text)
+                self.view.replace(edit, r, text)
+
+
+class InsertDatePromptCommand(sublime_plugin.TextCommand):
+
+    """Ask for a format string, while preserving the other parameters.
+
+    If "format" is provided, it will be pre-inserted into the prompt.
+    """
+
+    def run(self, edit, format=None, tz_in=None, tz_out=None):
+        def on_done(fmt):
+            self.view.run_command(
+                "insert_date",
+                {"format": fmt, "tz_in": tz_in, "tz_out": tz_out}
+            )
+
+        self.view.window().show_input_panel(
+            # Caption
+            "Date format string:",
+            # Default text
+            str(format) if format else '',
+            # on_done callback (call this command again)
+            on_done,
+            # Unnecessary callbacks
+            None, None
+        )
 
 
 class InsertDatePanelCommand(sublime_plugin.TextCommand):
