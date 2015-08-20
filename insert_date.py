@@ -272,7 +272,7 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
 
 # Handle context
 def plugin_loaded():
-    global s, fdate
+    global s
 
     s = Settings(
         sublime.load_settings('insert_date.sublime-settings'),
@@ -285,12 +285,15 @@ def plugin_loaded():
     )
 
     # Register on settings changes
-    def on_settings_changed():
-        print("InsertDate settings changed")
+    def on_settings_changed(initial=False):
+        global fdate
+
+        if not initial:
+            status("settings changed")
         # These defaults will be used when the command's parameters are None
         fdate.set_default(s.get_state())
 
-    on_settings_changed()  # Apply initial settings
+    on_settings_changed(True)  # Apply initial settings
     s.set_callback(on_settings_changed)
 
 
