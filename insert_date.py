@@ -199,8 +199,8 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
             # Caption
             "Date format string:",
             # Default text
-            str(format) if format else '',
-            # on_done callback (call this command again)
+            format or fdate.default['format'],
+            # on_done callback
             on_done,
             # Unnecessary callbacks
             None, None
