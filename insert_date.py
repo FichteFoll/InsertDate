@@ -279,13 +279,6 @@ def plugin_unloaded():
 
     s.clear_callback(True)
 
-    # Close the potentially opened zip file
-    # Sadly, this doesn't help because ST itself still keeps an open handle to the file
-    # even when disabling.
-    from format_date import pytz
-    if pytz.zf:
-        pytz.zf.close()
-
 # ST2 backwards (and don't call it twice in ST3)
 unload_handler = plugin_unloaded if ST2 else lambda: None
 
