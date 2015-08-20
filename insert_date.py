@@ -297,7 +297,8 @@ def plugin_loaded():
 def plugin_unloaded():
     global s
 
-    s.clear_callback(True)
+    if s:
+        s.clear_callback(True)
 
 # ST2 backwards (and don't call it twice in ST3)
 unload_handler = plugin_unloaded if ST2 else lambda: None
