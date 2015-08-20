@@ -232,6 +232,10 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
         else:
             configs = configs + s.user_prompt_config
 
+        if not configs:
+            status("No configurations found to choose from")
+            return
+
         # Generate panel cache for quick_panel
         for conf in configs:
             # Read config
@@ -275,8 +279,8 @@ def plugin_loaded():
         settings=dict(
             format=('format', '%c'),
             tz_in=('tz_in', 'local'),
-            prompt_config=None,
-            user_prompt_config=None
+            prompt_config=('prompt_config', []),
+            user_prompt_config=('user_prompt_config', [])
         )
     )
 
