@@ -150,7 +150,10 @@ class Settings(object):
         return cb
 
 
+################################################################################
 # The actual commands
+
+
 class InsertDateCommand(sublime_plugin.TextCommand):
 
     """Prints Date according to given format string."""
@@ -277,6 +280,7 @@ class InsertDateSelectTimezone(sublime_plugin.ApplicationCommand):
 
     @staticmethod
     def on_select(index):
+        global s
         if index == -1:
             return
         timezone = pytz.all_timezones[index]
@@ -285,11 +289,22 @@ class InsertDateSelectTimezone(sublime_plugin.ApplicationCommand):
         sublime.save_settings('insert_date.sublime-settings')
 
     def run(self):
-        sublime.active_window().show_quick_panel(pytz.all_timezones,
-                                                 self.on_select)
+        global s
+        show_quick_panel = sublime.active_window().show_quick_panel
+        if ST2:
+            show_quick_panel(pytz.all_timezones, self.on_select)
+        else:
+            try:
+                selected_index = pytz.all_timezones.index(s.tz_in)
+            except ValueError:
+                selected_index = 0
+            show_quick_panel(pytz.all_timezones, self.on_select,
+                             selected_index=selected_index)
 
 
-# Handle context
+################################################################################
+
+
 def plugin_loaded():
     global s
 
