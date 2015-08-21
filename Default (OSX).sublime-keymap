@@ -44,11 +44,11 @@
     "command": "insert_date",
     "args": {"format": "unix"} },
 
-// Prompt for user input ("format" arg would behave as default text)
-// and insert the datetime using that format string
+// Prompt for user input ("format" behaves as default text)
+// and output timezone, if none provided,
+// and then insert the datetime with these parameters
   { "keys": ["alt+f5"],
-    "command": "insert_date",
-    "args": {"prompt": true} },
+    "command": "insert_date_prompt" },
 
 // Show the panel with pre-defined options from settings
   { "keys": ["f5"],

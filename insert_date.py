@@ -1,5 +1,8 @@
+import pytz
+
 import sublime
 import sublime_plugin
+
 
 try:
     from .format_date import FormatDate, UnknownTimeZoneError  # ST3
@@ -32,7 +35,21 @@ def status(msg, e=None):
         traceback.print_exc()
 
 
+def show_timezone_quickpanel(callback, selected_item):
+    global s
+    show_quick_panel = sublime.active_window().show_quick_panel
+    if ST2:
+        show_quick_panel(pytz.all_timezones, callback)
+    else:
+        try:
+            selected_index = pytz.all_timezones.index(selected_item)
+        except ValueError:
+            selected_index = 0
+        show_quick_panel(pytz.all_timezones, callback,
+                         selected_index=selected_index)
+
 # I wrote this for InactivePanes, but why not just use it here as well?
+# TODO write methods to change settings and flush changes.
 class Settings(object):
     """Provides various helping functions for wrapping the sublime settings objects.
 
@@ -147,26 +164,16 @@ class Settings(object):
         return cb
 
 
+################################################################################
 # The actual commands
+
+# TODO `locale` setting to modify `%c %x %X %p` representation?
+# TODO `shift` param
 class InsertDateCommand(sublime_plugin.TextCommand):
 
     """Prints Date according to given format string."""
 
-    def run(self, edit, format=None, prompt=False, tz_in=None, tz_out=None):
-        if prompt:
-            self.view.window().show_input_panel(
-                # Caption
-                "Date format string:",
-                # Default text
-                str(format) if format else '',
-                # on_done callback (call this command again)
-                lambda f: self.view.run_command("insert_date",
-                                                {"format": f, "tz_in": tz_in, "tz_out": tz_out}),
-                # Unnecessary callbacks
-                None, None
-            )
-            return  # Call already handled
-
+    def run(self, edit, format=None, tz_in=None, tz_out=None):
         if format is not None:
             if format == '' or not isinstance(format, basestring) or format.isspace():
                 # Not a string, empty or only whitespaces
@@ -179,20 +186,71 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             status(str(e).strip('"'), e)
             return
         except Exception as e:
-            status('Error parsing format string `%s`' % format, e)
+            status("Error parsing format string `%s`" % format, e)
             return
 
         # Don't bother replacing selections with actually nothing
-        if text == '' or text.isspace():
+        if not text or text.isspace():
             return
 
         # Do replacements
         for r in self.view.sel():
             # Insert when sel is empty to not select the contents
             if r.empty():
-                self.view.insert (edit, r.a, text)
+                self.view.insert(edit, r.a, text)
             else:
-                self.view.replace(edit, r,   text)
+                self.view.replace(edit, r, text)
+
+
+class InsertDatePromptCommand(sublime_plugin.TextCommand):
+
+    """Ask for a format string, while preserving the other parameters.
+
+    If "format" is provided, it will be pre-inserted into the prompt.
+    """
+
+    def run(self, edit, format=None, tz_in=None, tz_out=None):
+        self.tz_in = tz_in
+        self.tz_out = tz_out
+
+        i_panel = self.view.window().show_input_panel(
+            # Caption
+            "Date format string:",
+            # Default text
+            format or fdate.default['format'],
+            # on_done callback
+            self.on_format,
+            # Unnecessary callbacks
+            None, None
+        )
+
+        # Select the default text
+        i_panel.sel().clear()
+        i_panel.sel().add(sublime.Region(0, i_panel.size()))
+
+    def on_format(self, fmt):
+        global s
+        if fmt:
+            self.format = fmt
+        if self.tz_out:
+            self.run_for_real()
+        else:
+            # Ask for an output timezone
+            sublime.status_message("[InsertDate] "
+                                   "Please select a timezone for the output "
+                                   "(press 'esc' to use same as input)")
+            show_timezone_quickpanel(self.on_tz_out, self.tz_in or s.tz_in)
+
+    def on_tz_out(self, index):
+        if index != -1:
+            self.tz_out = pytz.all_timezones[index]
+        self.run_for_real()
+
+    def run_for_real(self):
+        self.view.run_command(
+            'insert_date',
+            {'format': self.format, 'tz_in': self.tz_in, 'tz_out': self.tz_out}
+        )
 
 
 class InsertDatePanelCommand(sublime_plugin.TextCommand):
@@ -215,6 +273,10 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             status("`user_prompt_config` setting is invalid")
         else:
             configs = configs + s.user_prompt_config
+
+        if not configs:
+            status("No configurations found to choose from")
+            return
 
         # Generate panel cache for quick_panel
         for conf in configs:
@@ -247,44 +309,79 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             return
 
         name = self.panel_cache[index][0]
-        self.view.run_command("insert_date", self.config_map[name])
+        self.view.run_command('insert_date', self.config_map[name])
 
 
-# Handle context
+class InsertDateSelectTimezone(sublime_plugin.ApplicationCommand):
+
+    @staticmethod
+    def on_select(index):
+        global s
+        if index == -1:
+            return
+        timezone = pytz.all_timezones[index]
+        s._sobj.set('tz_in', timezone)
+        s._sobj.erase('silence_timezone_request')
+        sublime.save_settings('insert_date.sublime-settings')
+
+    def run(self):
+        global s
+        show_timezone_quickpanel(self.on_select, s.tz_in)
+
+################################################################################
+
+
 def plugin_loaded():
-    global s, fdate
+    global s
 
     s = Settings(
         sublime.load_settings('insert_date.sublime-settings'),
         settings=dict(
             format=('format', '%c'),
             tz_in=('tz_in', 'local'),
-            prompt_config=None,
-            user_prompt_config=None
+            prompt_config=('prompt_config', []),
+            user_prompt_config=('user_prompt_config', []),
+            silence_timezone_request=None
         )
     )
 
     # Register on settings changes
-    def on_settings_changed():
-        print("InsertDate settings changed")
+    def on_settings_changed(initial=False):
+        global fdate
+
+        if not initial:
+            status("settings changed")
         # These defaults will be used when the command's parameters are None
         fdate.set_default(s.get_state())
 
-    on_settings_changed()  # Apply initial settings
+    on_settings_changed(True)  # Apply initial settings
     s.set_callback(on_settings_changed)
+
+    if s.tz_in == 'local' and not s.silence_timezone_request:
+        # Request user to set a timezone - later
+        def request_timezone():
+            if sublime.ok_cancel_dialog(
+                "You should set your timezone in InsertDate's settings "
+                "in order to properly use that package.\n"
+                "Do you wish to do that now?"
+                "\n\n"
+                "Note: You can open the timezone prompt any time "
+                'using the "InsertDate: Select Timezone" command.',
+                "Yes"
+            ):
+                sublime.run_command('insert_date_select_timezone')
+            else:
+                s._sobj.set('silence_timezone_request', True)
+                sublime.save_settings('insert_date.sublime-settings')
+
+        sublime.set_timeout_async(request_timezone, 3000)
 
 
 def plugin_unloaded():
     global s
 
-    s.clear_callback(True)
-
-    # Close the potentially opened zip file
-    # Sadly, this doesn't help because ST itself still keeps an open handle to the file
-    # even when disabling.
-    from format_date import pytz
-    if pytz.zf:
-        pytz.zf.close()
+    if s:
+        s.clear_callback(True)
 
 # ST2 backwards (and don't call it twice in ST3)
 unload_handler = plugin_unloaded if ST2 else lambda: None
