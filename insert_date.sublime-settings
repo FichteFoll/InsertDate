@@ -1,6 +1,6 @@
 {
     ////////////////////////////////////////////////////////////////////////////
-    // COPY THE SETTING (+COMMENT) YOU WANT TO MODIFY TO YOUR USER SETTINGS,
+    // COPY THE SETTING YOU WANT TO MODIFY TO YOUR USER SETTINGS,
     // OTHERWISE CHANGES WILL BE OVERWRITTEN WITH EVERY UPDATE!
     //
     // Tip: Copy the setting + comment, open the command palette,
@@ -8,8 +8,8 @@
     ////////////////////////////////////////////////////////////////////////////
 
     // This is the format that will be used as default when no format has been
-    // specified when calling the command. Also used for the "InsertDate:
-    // Default" command from the command palette.
+    // specified when calling the command. Also used for the
+    // "InsertDate: Default" command from the command palette.
     // Default: '%c'
     "format": "%c",
 
@@ -18,14 +18,16 @@
     // set to 'local' it will be interpreted as the timezone of your machine. As
     // of now, 'local' does not support the `%Z` named timezone representation
     // and it is HIGHLY RECOMMENDED to specify your a "pytz timezone" here.
-    // All available timezones can be found here:
-    // https://github.com/FichteFoll/sublimetext-insertdate/blob/a940b4c4394022725ba933c7db0deb1fb8d21efe/format_date/pytz/__init__.py#L1090-L1520
-    // Default: 'local'
+    //
+    // You can use the "InsertDate: Select Timezone" command to choose from a
+    // list of available timezones.
+    //
+    // Default: 'local' (does not support the `%Z` timezone name variable)
     "tz_in": "local",
 
-    // A set of pre-defined settings that are prompted by "promt_insert_time"
+    // A set of pre-defined settings that are prompted by "insert_time_panel"
     // and previewed. You can modify this list in your User settings, but be
-    // aware that you remove ALL entries when overriding "prompt_config"!
+    // aware that you replace ALL entries when overriding "prompt_config"!
     // Use "user_prompt_config" if you just want to add a few entries.
     //
     // `$default` is replaced by the "format" setting above, unspecified values
@@ -98,4 +100,10 @@
     // Supposed to be used by you when you just want to add some entries to the
     // list.
     "user_prompt_config": []
+
+    // This is a setting used to disable the message dialog asking you to select
+    // a timezone. It is not supposed to be modified manually but included here
+    // for the sake of completeness.
+    //
+    // "silence_timezone_request": null
 }
