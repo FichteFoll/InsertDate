@@ -1,7 +1,8 @@
+import pytz
+
 import sublime
 import sublime_plugin
 
-import pytz
 
 try:
     from .format_date import FormatDate, UnknownTimeZoneError  # ST3
@@ -33,6 +34,19 @@ def status(msg, e=None):
         import traceback
         traceback.print_exc()
 
+
+def show_timezone_quickpanel(callback, selected_item):
+    global s
+    show_quick_panel = sublime.active_window().show_quick_panel
+    if ST2:
+        show_quick_panel(pytz.all_timezones, callback)
+    else:
+        try:
+            selected_index = pytz.all_timezones.index(selected_item)
+        except ValueError:
+            selected_index = 0
+        show_quick_panel(pytz.all_timezones, callback,
+                         selected_index=selected_index)
 
 # I wrote this for InactivePanes, but why not just use it here as well?
 # TODO write methods to change settings and flush changes.
@@ -196,11 +210,8 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit, format=None, tz_in=None, tz_out=None):
-        def on_done(fmt):
-            self.view.run_command(
-                'insert_date',
-                {'format': fmt, 'tz_in': tz_in, 'tz_out': tz_out}
-            )
+        self.tz_in = tz_in
+        self.tz_out = tz_out
 
         i_panel = self.view.window().show_input_panel(
             # Caption
@@ -208,7 +219,7 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
             # Default text
             format or fdate.default['format'],
             # on_done callback
-            on_done,
+            self.on_format,
             # Unnecessary callbacks
             None, None
         )
@@ -216,6 +227,30 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
         # Select the default text
         i_panel.sel().clear()
         i_panel.sel().add(sublime.Region(0, i_panel.size()))
+
+    def on_format(self, fmt):
+        global s
+        if fmt:
+            self.format = fmt
+        if self.tz_out:
+            self.run_for_real()
+        else:
+            # Ask for an output timezone
+            sublime.status_message("[InsertDate] "
+                                   "Please select a timezone for the output "
+                                   "(press 'esc' to use same as input)")
+            show_timezone_quickpanel(self.on_tz_out, self.tz_in or s.tz_in)
+
+    def on_tz_out(self, index):
+        if index != -1:
+            self.tz_out = pytz.all_timezones[index]
+        self.run_for_real()
+
+    def run_for_real(self):
+        self.view.run_command(
+            'insert_date',
+            {'format': self.format, 'tz_in': self.tz_in, 'tz_out': self.tz_out}
+        )
 
 
 class InsertDatePanelCommand(sublime_plugin.TextCommand):
@@ -291,17 +326,7 @@ class InsertDateSelectTimezone(sublime_plugin.ApplicationCommand):
 
     def run(self):
         global s
-        show_quick_panel = sublime.active_window().show_quick_panel
-        if ST2:
-            show_quick_panel(pytz.all_timezones, self.on_select)
-        else:
-            try:
-                selected_index = pytz.all_timezones.index(s.tz_in)
-            except ValueError:
-                selected_index = 0
-            show_quick_panel(pytz.all_timezones, self.on_select,
-                             selected_index=selected_index)
-
+        show_timezone_quickpanel(self.on_select, s.tz_in)
 
 ################################################################################
 
