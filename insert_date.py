@@ -1,6 +1,8 @@
 import sublime
 import sublime_plugin
 
+import pytz
+
 try:
     from .format_date import FormatDate, UnknownTimeZoneError  # ST3
 except ValueError:
@@ -33,6 +35,7 @@ def status(msg, e=None):
 
 
 # I wrote this for InactivePanes, but why not just use it here as well?
+# TODO write methods to change settings and flush changes.
 class Settings(object):
     """Provides various helping functions for wrapping the sublime settings objects.
 
@@ -270,6 +273,22 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
         self.view.run_command("insert_date", self.config_map[name])
 
 
+class InsertDateSelectTimezone(sublime_plugin.ApplicationCommand):
+
+    @staticmethod
+    def on_select(index):
+        if index == -1:
+            return
+        timezone = pytz.all_timezones[index]
+        s._sobj.set('tz_in', timezone)
+        s._sobj.erase('silence_timezone_request')
+        sublime.save_settings('insert_date.sublime-settings')
+
+    def run(self):
+        sublime.active_window().show_quick_panel(pytz.all_timezones,
+                                                 self.on_select)
+
+
 # Handle context
 def plugin_loaded():
     global s
@@ -280,7 +299,8 @@ def plugin_loaded():
             format=('format', '%c'),
             tz_in=('tz_in', 'local'),
             prompt_config=('prompt_config', []),
-            user_prompt_config=('user_prompt_config', [])
+            user_prompt_config=('user_prompt_config', []),
+            silence_timezone_request=None
         )
     )
 
@@ -295,6 +315,25 @@ def plugin_loaded():
 
     on_settings_changed(True)  # Apply initial settings
     s.set_callback(on_settings_changed)
+
+    if s.tz_in == 'local' and not s.silence_timezone_request:
+        # Request user to set a timezone - later
+        def request_timezone():
+            if sublime.ok_cancel_dialog(
+                "You should set your timezone in InsertDate's settings "
+                "in order to properly use that package.\n"
+                "Do you wish to do that now?"
+                "\n\n"
+                "Note: You can open the timezone prompt any time "
+                'using the "InsertDate: Select Timezone" command.',
+                "Yes"
+            ):
+                sublime.run_command('insert_date_select_timezone')
+            else:
+                s._sobj.set('silence_timezone_request', True)
+                sublime.save_settings('insert_date.sublime-settings')
+
+        sublime.set_timeout_async(request_timezone, 3000)
 
 
 def plugin_unloaded():

@@ -12,6 +12,10 @@
     "command": "insert_date_prompt"
   },
 
+  { "caption": "InsertDate: Select Timezone",
+    "command": "insert_date_select_timezone"
+  },
+
   // Configuration files
   { "caption": "InsertDate: Open README",
     "command": "open_file",
