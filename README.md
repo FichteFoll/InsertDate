@@ -1,26 +1,35 @@
 # InsertDate - Sublime Text Plugin
 
 A plugin for [Sublime Text][st] 2 and 3 that inserts the current date and/or
-time according to the format specified and supports named timezones.
+time according to the format specified, supporting named timezones.
+
+![insertdate](https://cloud.githubusercontent.com/assets/931051/9400476/e64b49f8-47c1-11e5-9088-e4f0f0778011.gif)
 
 For a brief introduction about the accepted formatting syntax, see
-<http://strfti.me/>.
+<http://strfti.me/>. *Might yield different results, see
+[below](#format-examples).*
 
 
-## Install
+## Installation
 
-You can install this package with [Package Control][pck-ctrl] under
-[*InsertDate*][pck-browse].
+You **must** install this package with [Package Control][pck-ctrl], under
+[`InsertDate`][pck-browse].
+
+Upon installation, you will be asked to select your local timezone. This is
+required for pretty formatting of the `%Z` variable and should be set, but
+InsertDate will work without it.
+You can change this setting at any time with the "InsertDate: Select Timezone"
+command from the command palette.
 
 
 ## Usage
 
-### Screenshot
+The quick panel (see gif) opens on <kbd>F5</kbd> and shows a selection of
+pre-defined settings that can be modified. See [Settings](#settings) on how to do that.
 
-The panel opens on <kbd>F5</kbd> and shows a selection of pre-defined settings
-that can be modified. See [Settings](#settings) on how to do that.
-
-[![][scr-panel-thumb]][scr-panel]
+However, there are many more default key bindings available to provide you with
+the most-needed formats and a command that allows you to insert your own
+format and output timezone on the fly.
 
 
 ### Command Examples
@@ -62,29 +71,36 @@ The following is an excerpt of the [default key bindings][keymap] (on
 
   // ... and many more
 
-// Prompt for user input ("format" arg would behave as default text)
-// and insert the datetime using that format string
+// Prompt for user input ("format" behaves as default text)
+// and output timezone, if none provided,
+// and then insert the datetime with these parameters
   { "keys": ["alt+f5"],
-    "command": "insert_date",
-    "args": {"prompt": true} },
+    "command": "insert_date_prompt" },
 
 // Show the panel with pre-defined options from settings
   { "keys": ["f5"],
-    "command": "insert_date",
-    "args": {"prompt": true} }
+    "command": "insert_date_panel" }
 ]
 
 ```
 
 
+### Settings ###
+
+Settings can be accessed using the menu (*Preferences > Package Settings >
+InsertDate > Settings - User/Default*) or the command palette ("Preferences:
+InsertDate Settings - User/Default").
+
+You can also view the default settings [here][settings].
+
+
 ### Format Examples
 
-Here are some examples on how the values are interpreted.
-
 For the accepted formatting syntax, see <http://strfti.me/> for an introduction
-and [`datetime.strftime()` behavior][strftime] for all details.
+and [`datetime.strftime()` behavior][strftime] for all details. Note that the
+introduction uses a different library and thus *may yield different results*.
 
-For the exact accepted
+Here are some examples on how the values are interpreted:
 
 | Format string              | Parameters                         | Resulting string                     |
 | :------------------------- | :--------------------------------- | :----------------------------------- |
@@ -103,7 +119,7 @@ For the exact accepted
 
 *Notes*:
 
-- `Europe/Berlin` is my actual timezone.
+- `CET` is my actual timezone.
 - `%c`, `%x` and `%X` are representative for *Locale’s appropriate time
   representation*.
 - `%p` also corresponds to the locale's setting, thus using `%p` e.g. on a
@@ -147,12 +163,6 @@ Insert the current date/time with specified formatting
   <http://strfti.me/> for an introduction and [`datetime.strftime()`
   behavior][strftime] for all details.
 
-- **prompt** (bool) - *Default*: `False`
-
-  If `True` a small popup window will be displayed where you can specify the
-  format string manually. The string passed in `format` will be used as default
-  text if available.
-
 - **tz_in** (str) - *Default*: `'local'` (configurable in settings and
   recommended to change)
 
@@ -171,62 +181,10 @@ Insert the current date/time with specified formatting
   `%z`).
 
 
-### Settings ###
+***insert_date_prompt***
 
-Settings can be accessed using the menu (*Preferences > Package Settings >
-InsertDate > Settings - User/Default*) or the command palette ("Preferences:
-InsertDate Settings - User/Default").
-
-Here is an excerpt of the [default settings][settings]:
-
-```js
-{
-    // This is the format that will be used as default when no format has been
-    // specified when calling the command. Also used for the "InsertDate:
-    // Default" command from the command palette.
-    // Default: '%c'
-    "format": "%c",
-
-    // Similar to above, this is the default timezone that will be used when
-    // there was no other incoming timezone specified. Because the default is
-    // set to 'local' it will be interpreted as the timezone of your machine. As
-    // of now, 'local' does not support the `%Z` named timezone representation
-    // and it is HIGHLY RECOMMENDED to specify your a "pytz timezone" here.
-    // See the readme for a link to the available timezones.
-    // Default: 'local'
-    "tz_in": "local",
-
-    // A set of pre-defined settings that are prompted by "promt_insert_time"
-    // and previewed. You can modify this list in your User settings, but be
-    // aware that you remove ALL entries when overriding "prompt_config"!
-    // Use "user_prompt_config" if you just want to add a few entries.
-    //
-    // `$default` is replaced by the "format" setting above, unspecified values
-    // remain default.
-    "prompt_config": [ //...
-    ],
-
-    // Works similar to "prompt_config" but is added to the above list.
-    // Supposed to be used by you when you just want to add some entries to the
-    // list.
-    "user_prompt_config": []
-}
-```
-
-
-## Libraries
-
-- ***[pytz-2014.7][pytz]*** ([pypi][pytz-pypi])
-
-  **pytz** by Stuart Bishop is used for displaying and conversion between
-  timezones. **MIT license**
-
-
-## ToDo
-
-- Shift times with a `shift` parameter (`datetime.timedelta(**shift)`)
-- `locale` option to modify `%c %x %X %p` representation?
-
+Open a small panel where you can specify the format string manually. The string
+passed in `format` will be used as default text if available. Accepts the same parameters as ***insert_date***.
 
 <!-- Links -->
 
@@ -235,9 +193,7 @@ Here is an excerpt of the [default settings][settings]:
 [pck-ctrl]: http://wbond.net/sublime_packages/package_control "Sublime Package Control by wbond"
 [pck-browse]: https://sublime.wbond.net/packages/InsertDate "InsertDate - Packages - Package Control"
 
-[pytz]: http://pytz.sourceforge.net/ "pytz - World Timezone Definitions for Python"
 [strftime]: http://docs.python.org/3/library/datetime.html#strftime-strptime-behavior "Python docs: 8.1.8. strftime() and strptime() Behavior"
-[pytz-pypi]: http://pypi.python.org/pypi/pytz#downloads "pytz : Python Package Index"
 
 [scr-panel]: http://i.imgur.com/hObkE27.png
 [scr-panel-thumb]: http://i.imgur.com/hObkE27l.png
