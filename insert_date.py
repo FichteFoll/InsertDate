@@ -168,11 +168,11 @@ class InsertDateCommand(sublime_plugin.TextCommand):
             status(str(e).strip('"'), e)
             return
         except Exception as e:
-            status('Error parsing format string `%s`' % format, e)
+            status("Error parsing format string `%s`" % format, e)
             return
 
         # Don't bother replacing selections with actually nothing
-        if text == '' or text.isspace():
+        if not text or text.isspace():
             return
 
         # Do replacements
@@ -194,8 +194,8 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
     def run(self, edit, format=None, tz_in=None, tz_out=None):
         def on_done(fmt):
             self.view.run_command(
-                "insert_date",
-                {"format": fmt, "tz_in": tz_in, "tz_out": tz_out}
+                'insert_date',
+                {'format': fmt, 'tz_in': tz_in, 'tz_out': tz_out}
             )
 
         i_panel = self.view.window().show_input_panel(
@@ -270,7 +270,7 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             return
 
         name = self.panel_cache[index][0]
-        self.view.run_command("insert_date", self.config_map[name])
+        self.view.run_command('insert_date', self.config_map[name])
 
 
 class InsertDateSelectTimezone(sublime_plugin.ApplicationCommand):
