@@ -374,7 +374,7 @@ def plugin_loaded():
                 s._sobj.set('silence_timezone_request', True)
                 sublime.save_settings('insert_date.sublime-settings')
 
-        sublime.set_timeout_async(request_timezone, 3000)
+        sublime.set_timeout(request_timezone, 3000)
 
 
 def plugin_unloaded():
