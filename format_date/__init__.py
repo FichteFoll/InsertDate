@@ -114,6 +114,7 @@ class FormatDate(object):
     def check_tzparam(self, tz, name):
         if isinstance(tz, basestring):
             try:
+                tz = str(tz)  # convert to ansi for ST2
                 return pytz.timezone(tz)
             except UnknownTimeZoneError:
                 raise UnknownTimeZoneError("Parameter %r = %r is not a valid timezone name"
