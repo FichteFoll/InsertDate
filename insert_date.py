@@ -153,7 +153,8 @@ class Settings(object):
 ################################################################################
 # The actual commands
 
-
+# TODO `locale` setting to modify `%c %x %X %p` representation?
+# TODO `shift` param
 class InsertDateCommand(sublime_plugin.TextCommand):
 
     """Prints Date according to given format string."""
