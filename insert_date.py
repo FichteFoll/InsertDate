@@ -213,15 +213,23 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
         self.tz_in = tz_in
         self.tz_out = tz_out
 
+        # Unset save_on_focus_lost so that ST doesn't save and remove trailing
+        # whitespace when the input/quick panel is opened, if that option is
+        # also enabled. (#26)
+        self.view.settings().set('save_on_focus_lost', False)
+
+        # Ask for the format string
         i_panel = self.view.window().show_input_panel(
-            # Caption
+            # caption
             "Date format string:",
-            # Default text
+            # initial_text
             format or fdate.default['format'],
-            # on_done callback
+            # on_done
             self.on_format,
-            # Unnecessary callbacks
-            None, None
+            # on_change (unused)
+            None,
+            # on_cancel
+            lambda: self.view.settings().erase('save_on_focus_lost')
         )
 
         # Select the default text
@@ -247,6 +255,7 @@ class InsertDatePromptCommand(sublime_plugin.TextCommand):
         self.run_for_real()
 
     def run_for_real(self):
+        self.view.settings().erase('save_on_focus_lost')
         self.view.run_command(
             'insert_date',
             {'format': self.format, 'tz_in': self.tz_in, 'tz_out': self.tz_out}
@@ -302,9 +311,15 @@ class InsertDatePanelCommand(sublime_plugin.TextCommand):
             self.panel_cache.append([conf['name'], text])
             self.config_map[conf['name']] = c
 
+        # Unset save_on_focus_lost so that ST doesn't save and remove trailing
+        # whitespace when the quick panel is opened, if that option is also
+        # enabled. (#26)
+        self.view.settings().set('save_on_focus_lost', False)
         self.view.window().show_quick_panel(self.panel_cache, self.on_done)
 
     def on_done(self, index):
+        # Erase our settings override
+        self.view.settings().erase('save_on_focus_lost')
         if index == -1:
             return
 
