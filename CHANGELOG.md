@@ -1,10 +1,17 @@
 InsertDate Changelog
 ====================
 
+v2.0.2 (2015-09-15)
+-------------------
+
+- Improved usability with `save_on_focus_lost` and
+  `trim_trailing_white_space_on_save` settings (#26)
+
+
 v2.0.1 (2015-08-21)
 -------------------
 
-- Fixed plugin for usage with ST2 (#)
+- Fixed plugin for usage with ST2 (#24)
 - Fixed longstanding issue (that nobody encountered?) where specifying a
   timezone via settings didn't work in ST2
 
